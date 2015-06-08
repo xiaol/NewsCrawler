@@ -2,7 +2,7 @@
 
 <h2>1. Introduction</h2>
 
-...
+This is a news content crawler system.
 
 <h2>2. Why we created this</h2>
 
@@ -14,7 +14,7 @@
 
 <h2>4. How to develop</h2>
 
-...
+Deploy by Scrapyd.
 
 <h2>5. Docs</h2>
 
