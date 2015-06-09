@@ -8,10 +8,6 @@
 """
 
 import re
-import sys
-# reload(sys)
-# sys.setdefaultencoding('utf-8')
-
 from lxml import etree
 from lxml.html import soupparser as soup
 
