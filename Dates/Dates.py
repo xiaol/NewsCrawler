@@ -17,21 +17,21 @@ class Dates(object):
     date = datetime.date.today()
 
     @classmethod
-    def today(cls):
-        return cls.date.strftime('%Y-%m-%d')
+    def today(cls, formater='%Y-%m-%d'):
+        return cls.date.strftime(formater)
 
     @classmethod
-    def yesterday(cls):
-        return (datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+    def reledate_by_day(cls, day, formater='%Y-%m-%d'):
+        return (datetime.date.today() + datetime.timedelta(days=day)).strftime(formater)
 
     @classmethod
-    def bfyesterday(cls):
-        return (datetime.date.today() - datetime.timedelta(days=2)).strftime('%Y-%m-%d')
+    def time(cls, formater='%Y-%m-%d %X'):
+        return time.strftime(formater, time.localtime())
 
     @classmethod
-    def time(cls):
-        return time.strftime("%Y-%m-%d %X", time.localtime())
+    def reletime_by_sec(cls, sec, formater='%Y-%m-%d %X'):
+        return time.strftime(formater, time.localtime(time.time() + int(sec)))
 
     @classmethod
-    def reletime(cls):
-        return time.strftime("%Y-%m-%d %X", time.localtime(time.time() + random.randint(60, 1000)))
+    def rangtime(cls, formater='%Y-%m-%d %X'):
+        return time.strftime(formater, time.localtime(time.time() + random.randint(60, 6000)))
