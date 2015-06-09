@@ -1,4 +1,4 @@
-<h1>Project Name</h1>
+<h1>News Crawler</h1>
 
 <h2>1. Introduction</h2>
 
