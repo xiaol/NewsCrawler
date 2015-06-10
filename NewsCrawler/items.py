@@ -12,21 +12,27 @@ class ListItem(Item):
     """
     Hold the list of urls from start url.
     """
-    start_url = Field()
-    urls = Field()
+    start_url = Field()             # str                           # 抓取起始网址
+    urls = Field()                  # list                          # 新闻网址列表
 
 
 class ContItem(Item):
     """
     Hold the field form content by each url from ListItem.urls.
     """
-    url = Field()
-    title = Field()
-    tag = Field()
-    source = Field()
-    source_url = Field()
-    author = Field()
-    update_time = Field()
-    imgnum = Field()
+    url = Field()                   # str                           ，抓取网址
+    title = Field()                 # str                           ，文章标题
+    tags = Field()                  # str("tag1,tag2,tag3")         ，关键字
+    source = Field()                # str                           ，来源网站
+    source_url = Field()            # str("http://..")              ，来源网址
+    author = Field()                # str                           ，作者
+    update_time = Field()           # str("YYYY-MM-DD HH:MM:SS")    ，发布时间
+    imgnum = Field()                # int                           ，图片个数
 
-    content = Field()
+    content = Field()                                               # 文章正文
+    # list[
+    #      {'0':{'img':'http://'}},
+    #      {'1':{'img_info':'xxxxx'}},
+    #      {'2':{'txt':'xxxxx'}},
+    #      ....]
+
