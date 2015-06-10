@@ -54,7 +54,6 @@ class ListSpiderSohuNewsImportant(Spider):
         item = ListItem()
 
         source = Cleaners.clean(response.body)
-        # print source
         root = soup.fromstring(source)
 
         xp = '//*[@class="it"]/div/a'
@@ -64,8 +63,8 @@ class ListSpiderSohuNewsImportant(Spider):
             url = ''.join(['http://m.sohu.com', it[1]])
             title = it[0]
             uris_titles[url] = title
-        for k, v in uris_titles.iteritems():
-            print k, v
+        # for k, v in uris_titles.iteritems():
+        #     print k, v
 
         item['start_url'] = response.url
         item['urls'] = uris_titles
