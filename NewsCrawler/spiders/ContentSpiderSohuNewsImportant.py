@@ -42,9 +42,6 @@ class ContentSpiderSohuNewsImportant(Spider):
         item = ContItem()
 
         source = Cleaners.clean(response.body)
-        # print source
-
-        # Root convert by soupparse for extractor
         root = soup.fromstring(source)
 
         item['url'] = response.url
@@ -54,9 +51,7 @@ class ContentSpiderSohuNewsImportant(Spider):
         item['source_url'] = response.url
         item['author'] = ''
         item['update_time'] = Parser.get_date(root) or ''
-
         item['content'] = Parser.get_content(root) or []
-
         item['imgnum'] = Parser.get_imgnum(item['content']) if item['content'] else 0
 
         yield item
