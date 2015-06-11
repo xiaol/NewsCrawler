@@ -7,6 +7,7 @@
 
 import time
 import redis
+from collections import defaultdict
 from redis.exceptions import ConnectionError
 from Models.Mongo import Mongo
 
@@ -45,7 +46,7 @@ class ListPipeline(object):
         crawlat = ':'.join(['crawlat', dt])                     # Counts of websites crawled by day.
 
         timeout = int(time.time())+60*60*24*2                   # Keep the url for 2 days
-        q_name = ':'.join([info.q_name, 'content'])             # Push to content spider
+        q_name = ':'.join([info['qname'], 'content'])             # Push to content spider
 
         for url, title in urls.iteritems():                     # Foreach url, title
             if not url:
@@ -83,30 +84,35 @@ class ContentPipeline(object):
     def process_item(self, item, spider):
         if 'content_spider' not in spider.name:
             return item
-        datetime = Dates.time()
         url = item['url']
 
-        # Check the control Flag from redis with url, if url.flag != 0, Drop item.
-        flag, title, start_url, start_title, channel = \
-            self.r.hmget(url, 'flag', 'title', 'start_url', 'start_title', 'channel')
-        if flag != 0:
-            # pass
-            raise DropItem("Drop item with the control is %s!" % flag)
-        if not item['content']:
-            raise DropItem("Drop item with the No content!")
+        # Check the control Flag from redis with url,
+        # if url.flag != 0(means crawled before or have not init in list spider), Drop item.
+        # if no content, Drop item.
+        try:
+            flag, title, start_url, start_title, channel = \
+                self.r.hmget(url, 'flag', 'title', 'start_url', 'start_title', 'channel')
+            if flag != '0':
+                raise DropItem("Drop item with the control is %s!" % flag)
+            if not item['content']:
+                raise DropItem("Drop item with the No content!")
+        except ConnectionError, e:
+            raise DropItem("Drop item with the Redis err: %s" % e)
 
-        table = {}
+        table = defaultdict()
+        # info from spider setup
         table['title'] = title or item['title']
         table['start_url'] = start_url
         table['start_title'] = start_title
         table['channel'] = channel
 
+        # info from content spider
         table['url'] = url
         table['tags'] = item['tags']
         table['source'] = item['source']
         table['source_url'] = item['source_url']
         table['author'] = item['author']
-        table['update_time'] = item['update_time'] or datetime
+        table['update_time'] = item['update_time'] or Dates.time()
         table['imgnum'] = item['imgnum']
         table['content'] = item['content']
 
