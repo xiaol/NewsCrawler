@@ -9,7 +9,10 @@
 
 from Dates.Dates import Dates
 from Extractor import Extractor
+from Reqs.Reqs import Reqs
 from collections import defaultdict
+import simplejson as json
+from lxml.html import soupparser as soup
 
 
 class Parser(object):
@@ -31,7 +34,6 @@ class Parser(object):
         tag = Extractor.get_ment_by_attrs(root, attrs)
         if tag is not None:
             tags = tag.get('content')
-            tags = tags.replace(',${after}', '').strip()
             tags = ','.join(tags.split())
         return tags or None
 
@@ -74,7 +76,7 @@ class Parser(object):
         return len(img)
 
     @classmethod
-    def get_content(cls, root):
+    def get_content(cls, url, root):
         picli = []
 
         attrs = [{'attr': 'class', 'value': 'finCnt'},
@@ -83,7 +85,42 @@ class Parser(object):
         # print 'conts:', conts
         if conts:
             picli += cls.cont_format(conts)
+        else:
+            return picli
+
+        last_page = cls.get_last_page(url, root)
+        if last_page:
+            index = len(conts) - 1
+            for item in last_page:
+                it = defaultdict(dict)
+                it[str(index + int(item.keys()[0]))] = item.values()[0]
+                picli.append(it)
+
         return picli
+
+    @classmethod
+    def get_last_page(cls, url, root):
+        attrs = [{'attr': 'class', 'value': 'btnsW3'},
+                 ]
+        last_page = Extractor.get_ment_by_attrs(root, attrs)
+        if last_page is None:
+            return None
+        news_id = [block for block in url.split('/') if block][-1]
+        api = 'http://m.sohu.com/api/n/v3/rest/ID/'
+        api = api.replace('ID', news_id)
+        last_content = Reqs.mobile_req(api)
+        if not last_content:
+            return None
+        last_content = last_content.content
+        last_content = json.loads(last_content)
+        last_content = last_content.get('rest_content')
+        if not last_content:
+            return None
+        last_content = soup.fromstring(last_content)
+        last_content = cls.cont_format(last_content)
+
+        return last_content or None
+
 
     @staticmethod
     def cont_format(node):
@@ -99,6 +136,8 @@ class Parser(object):
             if 'class' in child.attrib and child.attrib['class'] == 'finCnt':
                 continue
             if 'class' in child.attrib and child.attrib['class'] == 'toShare clearfix':
+                break
+            if 'class' in child.attrib and child.attrib['class'] == 'btnsW3':
                 break
 
             # video frame
