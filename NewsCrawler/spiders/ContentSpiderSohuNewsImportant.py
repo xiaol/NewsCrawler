@@ -24,11 +24,11 @@ class ContentSpiderSohuNewsImportant(Spider):
 
     name = 'content_spider_sohu_news_important'
     qname = 'sohu_news_important:content'
-    # pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    # r = redis.Redis(connection_pool=pool)
+    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+    r = redis.Redis(connection_pool=pool)
 
     start_urls = [
-        'http://m.sohu.com/n/414682958/',
+        'http://m.sohu.com/n/556353845/',
     ]
 
     # def start_requests(self):
@@ -51,7 +51,7 @@ class ContentSpiderSohuNewsImportant(Spider):
         item['source_url'] = response.url
         item['author'] = ''
         item['update_time'] = Parser.get_date(root) or ''
-        item['content'] = Parser.get_content(root) or []
+        item['content'] = Parser.get_content(item['url'], root) or []
         item['imgnum'] = Parser.get_imgnum(item['content']) if item['content'] else 0
 
         yield item
