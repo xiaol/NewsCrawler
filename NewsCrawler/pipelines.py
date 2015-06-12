@@ -120,6 +120,12 @@ class ContentPipeline(object):
             news_items = Mongo('NewsItems')
             db = news_items.table
             db.insert(table)
+
+            self.r.hmset(url, {
+                'imgnum': item['imgnum'],
+                'flag': 1
+            })
+
         except Exception, e:
             raise DropItem("Drop item with Insert NewsItems err: ", e)
 
