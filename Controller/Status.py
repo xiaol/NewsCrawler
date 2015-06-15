@@ -7,6 +7,10 @@
     Date:    15/6/15
 """
 
+import sys
+sys.path.insert(0, "..")
+sys.path.append("/work/pro/NewsCrawler/")
+
 import redis
 from collections import defaultdict
 from InitSetup import InitSetup
