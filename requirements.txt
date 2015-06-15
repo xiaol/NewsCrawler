@@ -1,5 +1,14 @@
 python>=2.7.8
 pymongo==2.7.2
-requests==2.5.1
-gevent==1.0.1
-scrapy==0.24.4
+requests==2.7.0
+gevent==1.0.2
+greenlet==0.4.7
+scrapy==0.24.6
+cffi==1.1.2
+cryptography==0.9.1
+cssselect==0.9.1
+lxml==3.4.4
+mongoengine==0.5.2
+redis==2.4.10
+Twisted==15.2.1
+supervisor==3.1.3
