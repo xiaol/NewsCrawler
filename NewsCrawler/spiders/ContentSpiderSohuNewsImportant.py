@@ -27,16 +27,16 @@ class ContentSpiderSohuNewsImportant(Spider):
     pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
     r = redis.Redis(connection_pool=pool)
 
-    start_urls = [
-        'http://m.sohu.com/n/556353845/',
-    ]
+    # start_urls = [
+    #     'http://m.sohu.com/n/556353845/',
+    # ]
 
-    # def start_requests(self):
-    #     # formate start_urls from redis pop
-    #     while 1:
-    #         yield self.make_requests_from_url(
-    #             Popqueue.rpop(self.r, self.qname)
-    #         )
+    def start_requests(self):
+        # formate start_urls from redis pop
+        while 1:
+            yield self.make_requests_from_url(
+                Popqueue.rpop(self.r, self.qname)
+            )
 
     def parse(self, response):
         item = ContItem()
