@@ -9,7 +9,9 @@
 """
 
 import sys
-sys.path.append("..")
+sys.path.insert(0, "..")
+sys.path.append("/work/pro/NewsCrawler/")
+
 
 import time
 import redis
