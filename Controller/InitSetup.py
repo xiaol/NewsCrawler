@@ -117,7 +117,7 @@ class InitSetup(object):
             q_name = url_q[1]
             url = url_q[0]
             print "Task at %s-->%s-->%s" % (pri, q_name, url)
-            # r.lpush(q_name, url)
+            r.lpush(q_name, url)
 
 
 class Status(object):
