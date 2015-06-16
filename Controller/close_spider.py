@@ -27,7 +27,7 @@ def kill_process_by_name(name):
         return
 if __name__ == '__main__':
 
-    scrapyd = ScrapydAPI('http://localhost:6800')
+    scrapyd = ScrapydAPI('http://localhost:6888')
     list_projects = scrapyd.list_projects()
     print list_projects
 
@@ -46,5 +46,5 @@ if __name__ == '__main__':
 
         for running_jog in running_jogs:
             jog_id = running_jog['id']
-            a = scrapyd.cancel(u'scrapy_common', jog_id)
+            a = scrapyd.cancel(u'NewsCrawler', jog_id)
             print running_jog['spider'] + ' closing!'

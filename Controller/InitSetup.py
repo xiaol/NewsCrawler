@@ -108,7 +108,7 @@ class InitSetup(object):
 
     @classmethod
     def task_queue(cls, pri, url_q_s):
-        minit = 10
+        minit = 60
         r = cls.redis_setup()
         gevent.sleep(int(pri)*minit)
         print '*'*60
@@ -117,7 +117,7 @@ class InitSetup(object):
             q_name = url_q[1]
             url = url_q[0]
             print "Task at %s-->%s-->%s" % (pri, q_name, url)
-            # r.lpush(q_name, url)
+            r.lpush(q_name, url)
 
 
 class Status(object):

@@ -3,7 +3,7 @@
 from scrapyd_api import ScrapydAPI
 
 print '.'*60
-scrapyd = ScrapydAPI('http://localhost:6800')
+scrapyd = ScrapydAPI('http://localhost:6888')
 list_projects = scrapyd.list_projects()
 print list_projects
 

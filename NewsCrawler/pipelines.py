@@ -91,7 +91,7 @@ class ContentPipeline(object):
         # if no content, Drop item.
         try:
             flag, title, start_url, start_title, channel = \
-                self.r.hmget(url, 'flag', 'title', 'start_url', 'start_title', 'channel')
+                self.r.hmget(url, ('flag', 'title', 'start_url', 'start_title', 'channel'))
             if flag != '0':
                 raise DropItem("Drop item with the control is %s!" % flag)
             if not item['content']:
