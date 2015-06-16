@@ -21,7 +21,7 @@ mail_postfix = "qq.com"
 def send_mail(cont_dict):
     cont_dict = sorted(cont_dict.iteritems(), key=lambda d: d[0], reverse=False)
     me = "Spider"+"<"+mail_user+"@"+mail_postfix+">"
-    cont_dict = ["<li>" + item[0] + " : " + item[1] + "</li>" for item in cont_dict]
+    cont_dict = ["<li>" + str(item[0]) + " : " + str(item[1]) + "</li>" for item in cont_dict]
     cont_dict = "<ul>\n" + "<li>Time : " + Dates.time() + "</li>" + '\n'.join(cont_dict) + "\n</ul>"
     msg = MIMEText(cont_dict, _subtype='html', _charset='utf8')
     msg['Subject'] = "Spider Status"
