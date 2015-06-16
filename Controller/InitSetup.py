@@ -166,13 +166,13 @@ class Status(object):
 if __name__ == '__main__':
 
     flag = defaultdict(int)
-    for i in range(8, 20):
+    for i in range(8, 21):
         flag[str(i)] = 1
 
     row = 1
     while 1:
         print "At row: ", row
-        h = time.localtime()[3]
+        h = str(time.localtime()[3])
         if h in flag.keys() and flag[h]:
             status = Status.get_status()
             send_mail(status)
