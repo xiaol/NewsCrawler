@@ -143,7 +143,7 @@ class Parser(object):
         # Content info with tag is p, delete it.
         try:
             node.find('.//div[@class="article_sfont article_head"]').drop_tree()
-        except TypeError:
+        except AttributeError:
             pass
 
         for child in node.iter():
