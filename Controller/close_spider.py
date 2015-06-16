@@ -27,7 +27,7 @@ def kill_process_by_name(name):
         return
 if __name__ == '__main__':
 
-    scrapyd = ScrapydAPI('http://localhost:6800')
+    scrapyd = ScrapydAPI('http://localhost:6888')
     list_projects = scrapyd.list_projects()
     print list_projects
 
