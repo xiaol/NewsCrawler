@@ -13,7 +13,7 @@ class Extractor(object):
     @classmethod
     def get_list(cls, root, xp):
         urls = root.xpath(xp)
-        urls = [(i.text_content().strip(), i.get('href')) for i in urls]
+        urls = [(i.text_content().replace('\n', ' ').strip(), i.get('href')) for i in urls]
         return urls or []
 
     @classmethod
