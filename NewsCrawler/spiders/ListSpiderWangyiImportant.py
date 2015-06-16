@@ -29,15 +29,15 @@ class ListSpiderWangyiImportant(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # 网易新闻要闻：http://news.163.com/mobile/
-    start_urls = ['http://news.163.com/mobile/',
-                  ]
+    # start_urls = ['http://news.163.com/mobile/',
+    #               ]
 
-    # def start_requests(self):
-    #     # formate start_urls from redis pop
-    #     while 1:
-    #         yield self.make_requests_from_url(
-    #             Popqueue.rpop(self.r, self.qname)
-    #         )
+    def start_requests(self):
+        # formate start_urls from redis pop
+        while 1:
+            yield self.make_requests_from_url(
+                Popqueue.rpop(self.r, self.qname)
+            )
 
     def parse(self, response):
         item = ListItem()
