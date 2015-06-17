@@ -16,7 +16,12 @@ from scrapy.contrib.downloadermiddleware.useragent import UserAgentMiddleware
 class RotateUserAgentMiddleware(UserAgentMiddleware):
 
     def process_request(self, request, spider):
-        ua = random.choice(Agents.mobile)
+
+        web_spiders = ['list_spider_sina_important']
+        if spider.name in web_spiders:
+            ua = random.choice(Agents.web)
+        else:
+            ua = random.choice(Agents.mobile)
         if ua:
             print "********Current UserAgent:%s************" % ua
 
