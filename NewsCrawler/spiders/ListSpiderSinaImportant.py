@@ -31,15 +31,15 @@ class ListSpiderSinaImportant(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # 新浪新闻要闻：http://news.sina.com.cn/
-    start_urls = ['http://news.sina.com.cn/',
-                  ]
+    # start_urls = ['http://news.sina.com.cn/',
+    #               ]
 
-    # def start_requests(self):
-    #     # formate start_urls from redis pop
-    #     while 1:
-    #         yield self.make_requests_from_url(
-    #             Popqueue.rpop(self.r, self.qname)
-    #         )
+    def start_requests(self):
+        # formate start_urls from redis pop
+        while 1:
+            yield self.make_requests_from_url(
+                Popqueue.rpop(self.r, self.qname)
+            )
 
     @staticmethod
     def api_urls(url):
