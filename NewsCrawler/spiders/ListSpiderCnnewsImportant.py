@@ -29,15 +29,15 @@ class ListSpiderCnnewsImportant(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # 中国新闻网要闻：http://www.chinanews.com/importnews.html
-    start_urls = ['http://www.chinanews.com/importnews.html',
-                  ]
+    # start_urls = ['http://www.chinanews.com/importnews.html',
+    #               ]
 
-    # def start_requests(self):
-    #     # formate start_urls from redis pop
-    #     while 1:
-    #         yield self.make_requests_from_url(
-    #             Popqueue.rpop(self.r, self.qname)
-    #         )
+    def start_requests(self):
+        # formate start_urls from redis pop
+        while 1:
+            yield self.make_requests_from_url(
+                Popqueue.rpop(self.r, self.qname)
+            )
 
     def parse(self, response):
         item = ListItem()
