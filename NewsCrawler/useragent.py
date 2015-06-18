@@ -17,7 +17,8 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
 
     def process_request(self, request, spider):
 
-        web_spiders = ['list_spider_sina_important']
+        web_spiders = ['list_spider_sina_important',
+                       ]
         if spider.name in web_spiders:
             ua = random.choice(Agents.web)
         else:
