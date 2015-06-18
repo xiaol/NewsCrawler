@@ -90,8 +90,8 @@ class ContentPipeline(object):
         # if url.flag != 0(means crawled before or have not init in list spider), Drop item.
         # if no content, Drop item.
         try:
-            flag, title, start_url, start_title, channel = \
-                self.r.hmget(url, ('flag', 'title', 'start_url', 'start_title', 'channel'))
+            flag, title, start_url, start_title, channel, channel_id = \
+                self.r.hmget(url, ('flag', 'title', 'start_url', 'start_title', 'channel', 'channel_id'))
             if flag != '0':
                 raise DropItem("Drop item with the control is %s!" % flag)
             if not item['content']:
@@ -105,6 +105,7 @@ class ContentPipeline(object):
         table['start_url'] = start_url
         table['start_title'] = start_title
         table['channel'] = channel
+        table['channel_id'] = channel_id
 
         # info from content spider
         table['url'] = url
