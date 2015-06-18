@@ -30,8 +30,10 @@ class ListSpiderHuanqiuImportant(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # 环球网要闻：http://m.huanqiu.com/lm.html?id=32&v=9
+    # 环球网海外看中国：http://m.huanqiu.com/lm.html?id=35&v=9
     # start_urls = [
     #     'http://m.huanqiu.com/lm.html?id=32&v=9',
+    #     'http://m.huanqiu.com/lm.html?id=35&v=9',
     #               ]
 
     def start_requests(self):
