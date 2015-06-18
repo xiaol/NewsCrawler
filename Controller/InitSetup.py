@@ -53,6 +53,7 @@ class InitSetup(object):
             items[tb['start_url']]['start_url'] = tb['start_url']
             items[tb['start_url']]['start_title'] = tb['start_title']
             items[tb['start_url']]['channel'] = tb['channel']
+            items[tb['start_url']]['channel_id'] = tb['channel_id']
 
         # Update all spider to redis.
         cls.update_spider_setup_to_redis(items)
