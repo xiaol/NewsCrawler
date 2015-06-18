@@ -42,7 +42,6 @@ class ContentSpiderCnnewsImportant(Spider):
         item = ContItem()
 
         source = response.body
-        print source
         root = soup.fromstring(source)
 
         item['url'] = response.url
