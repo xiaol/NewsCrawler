@@ -117,6 +117,9 @@ class ContentPipeline(object):
         table['imgnum'] = item['imgnum']
         table['content'] = item['content']
 
+        # info with create
+        table['create_time'] = Dates.time()
+
         try:
             news_items = Mongo('NewsItems')
             db = news_items.table
