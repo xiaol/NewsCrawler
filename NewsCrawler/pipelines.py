@@ -15,6 +15,34 @@ from scrapy.exceptions import DropItem
 from Dates.Dates import Dates
 
 
+class SpeicalPipeline(object):
+    """
+    Process the items from special spiders.
+    Init each url with info get from special spider to redis.
+    """
+    def __init__(self):
+        self.pool = redis.ConnectionPool(host='localhost', port=6379)
+        self.r = redis.Redis(connection_pool=self.pool)
+
+    def process_item(self, item, spider):
+        if not item.get('special'):                     # Pipeline just for special spider
+            return item
+        print 'in special pipeline'
+
+        urls = item['urls']                                         # Dict: { url: title, }
+        start_url = item['start_url']
+
+        timeout = int(time.time())+60*60*24*2                       # Keep the url for 2 days
+        for url, title in urls.iteritems():                         # Foreach url, title
+            self.r.hmset(url, {
+                'start_url': start_url,
+                'special_title': title,
+                'special_url': url
+            })
+            self.r.expireat(url, timeout)
+        return item
+
+
 class ListPipeline(object):
     """
     Process the items from list spiders.
@@ -35,8 +63,16 @@ class ListPipeline(object):
     def process_item(self, item, spider):
         if 'list_spider' not in spider.name:                    # Pipeline just for list spider
             return item
+        if item.get('special'):                                 # Pipeline just for list item
+            return item
+
         urls = item['urls']                                     # Dict: { url: title, }
         start_url = item['start_url']
+
+        # for special news, inited in special pipeline.
+        # this start_url is the special url, not from spider setup.
+        start_url, special_url, special_title = \
+            self.r.hmget(start_url, ('start_url', 'special_url', 'special_title'))
 
         info = self.get_info_by_start_url(start_url)
         if not info:
@@ -57,6 +93,13 @@ class ListPipeline(object):
             if flag is None:
                 info['title'] = title
                 info['flag'] = 0
+
+                # for special news, set special title,url,and real start url from spider setup.
+                if special_url and special_title:
+                    info['start_url'] = start_url
+                    info['special_url'] = special_url
+                    info['special_title'] = special_title
+
                 self.r.hmset(url, info)
                 self.r.expireat(url, timeout)
                 self.r.lpush(q_name, url)
@@ -90,8 +133,8 @@ class ContentPipeline(object):
         # if url.flag != 0(means crawled before or have not init in list spider), Drop item.
         # if no content, Drop item.
         try:
-            flag, title, start_url, start_title, channel, channel_id = \
-                self.r.hmget(url, ('flag', 'title', 'start_url', 'start_title', 'channel', 'channel_id'))
+            flag, title, start_url, start_title, channel, channel_id, special_url, special_title = \
+                self.r.hmget(url, ('flag', 'title', 'start_url', 'start_title', 'channel', 'channel_id', 'special_url', 'special_title'))
             if flag != '0':
                 raise DropItem("Drop item with the control is %s!" % flag)
             if not item['content']:
@@ -106,6 +149,10 @@ class ContentPipeline(object):
         table['start_title'] = start_title
         table['channel'] = channel
         table['channel_id'] = channel_id
+
+        if special_url and special_title:
+            table['special_url'] = special_url
+            table['special_title'] = special_title
 
         # info from content spider
         table['url'] = url
