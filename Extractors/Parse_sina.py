@@ -86,7 +86,7 @@ class Parser(object):
         # If this is a video site, just video in content
         vd2 = tree.find_class('video_cnt')      # Or response.url.startswith('http://video')
         if vd2:
-            picli = cls.video_site(tree)
+            # picli = cls.video_site(tree)
             return picli
 
         # If this ia a picwarp site, just picwarp in content
@@ -101,14 +101,15 @@ class Parser(object):
         # If video, put the video to the front of this site
         vd = tree.find_class('article-module video')
         if vd:
-            picli = cls.video_frame(tree)                 # vd is a list[, ]
+            # picli = cls.video_frame(tree)                 # vd is a list[, ]
+            picli = []
 
         attrs = [{'attr': 'class', 'value': 'art_content'},
                  {'attr': 'id', 'value': 'j_articleContent'}]
         conts = Extractor.get_ment_by_attrs(root, attrs)
         print 'conts:', conts
         if conts:
-            picli = picli + cls.cont_format(conts)
+            picli += cls.cont_format(conts)
 
         # If has next pages, add to picli with simple check
         last_pages = []
@@ -168,15 +169,22 @@ class Parser(object):
             qs.append('='.join(['vt', parm['vt'][0]]))
         qs.append('#column')
         api = '?'.join([uri, '&'.join(qs)])
+        # http://photo.sina.cn/album_1_2841_85617.htm?vt=4&pos=8&cid=56261&ch=1
+        # http://photo.sina.cn/aj/album?action=image&ch=1&sid=2841&aid=85617&w=722&h=675&dpr=2
+        # http://photo.sina.cn/aj/album?action=image&ch=1&cid=56261&vt=4&#column
         contents = []
+        dedupe = set()
         conts = Reqs.mobile_req(api)
         if conts:
-            conts = json.loads(conts)
+            conts = json.loads(conts.content)
             for cont in conts:
-                if cont['picurl'] not in contents:
-                    contents.append(cont['picurl'])
-                if cont['intro'] not in contents:
-                    contents.append(cont['intro'])
+                item = defaultdict(dict)
+                if cont['picurl'] not in dedupe:
+                    item[str(conts.index(cont))]['img'] = cont['picurl']
+                    dedupe.add(cont['picurl'])
+                if cont['intro'] not in dedupe:
+                    item[str(conts.index(cont))]['img_info'] = cont['intro']
+                    dedupe.add(cont['intro'])
         return contents
 
     @staticmethod
@@ -262,7 +270,7 @@ class Parser(object):
 
         if cont:
             try:
-                cont = json.loads(cont)
+                cont = json.loads(cont.content)
             except ValueError:
                 cont = None
             try:
@@ -270,6 +278,15 @@ class Parser(object):
                 cont = soup.fromstring(cont)
                 cont = [tag.text_content().replace(u'\u005b\u5fae\u535a\u005d', '') for tag in cont.iter('p')]
                 cont = [tag for tag in cont if tag and tag != '\n']
+                result = []
+                for c in cont:
+                    item = defaultdict(dict)
+                    if c.startswith('http:'):
+                        item[str(cont.index(c))]['img'] = c
+                    else:
+                        item[str(cont.index(c))]['txt'] = c
+                        result.append(item)
+                cont = result
             except KeyError:
                 cont = []
         # print 'cont:', cont
