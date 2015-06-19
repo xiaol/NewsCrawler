@@ -9,6 +9,8 @@
 
 import sys
 import redis
+import simplejson as json
+from Reqs.Reqs import Reqs
 from scrapy.spider import Spider
 from collections import defaultdict
 from lxml.html import soupparser as soup
@@ -29,11 +31,11 @@ class ListSpiderSinaRanking(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # 新浪排行：
-    # 国内：http://pro.sina.cn/?sa=d1t240v2158&vt=4&channel=news&col=china
-    # 社会：http://pro.sina.cn/?sa=d1t240v2158&vt=4&channel=news&col=society
+    # 国内：http://news.sina.cn/gn?vt=4&pos=8
+    # 社会：http://news.sina.cn/sh?vt=4&pos=8
     # start_urls = [
-    #     'http://pro.sina.cn/?sa=d1t240v2158&vt=4&channel=news&col=china',
-    #     'http://pro.sina.cn/?sa=d1t240v2158&vt=4&channel=news&col=society',
+    #     'http://news.sina.cn/gn?vt=4&pos=8',
+    #     'http://news.sina.cn/sh?vt=4&pos=8',
     #     ]
 
     def start_requests(self):
@@ -50,19 +52,59 @@ class ListSpiderSinaRanking(Spider):
         # print source
         root = soup.fromstring(source)
 
-        xp = '//a'
-        urls = Extractor.get_list(root, xp)
-        uris_titles = defaultdict(str)
-        for it in urls:
-            url = it[1]
-            title = it[0]
-            if url.endswith('vt=4') and url.startswith('http://news'):
-                uris_titles[url] = ''
+        # This is a API get
+        if response.url.startswith('http://feed'):
+            urls = self.api_urls(response.url)
+        else:
+            xp = '//*[@id="j_items_list"]/div/a'
+            urls = Extractor.get_list(root, xp)
 
-        # for k, v in uris_titles.iteritems():
-        #     print k, v
+        uris_titles = self.clean(urls)
+
+        for k, v in uris_titles.iteritems():
+            print k, v
 
         item['start_url'] = response.url
         item['urls'] = uris_titles
 
         yield item
+
+    @staticmethod
+    def api_urls(url):
+        urls = []
+        cont = Reqs.mobile_req(url)
+        if cont:
+            try:
+                cont = json.loads(cont.content)
+                dt = cont['result']['data']
+                for d in dt:
+                    urls.append((d['title'], d['url']))
+            except ValueError:
+                pass
+        return urls
+
+    @staticmethod
+    def clean(urls):
+        uris_titles = defaultdict(str)
+        for it in urls:
+            try:
+                title = it[0].split('\n')
+                if len(title) > 1:
+                    title = title[0]
+                else:
+                    title = it[0].split()[0]
+                title = title.replace(u'\uff08\u56fe\uff09', '').strip()                    # u'(图)'
+                title = title.replace(u'\u0028\u56fe\u0029', '').strip()                    # u'(高清)'
+                title = title.replace(u'\u0028\u9ad8\u6e05\u0029', '').strip()              # u'(高清图集)'
+                title = title.replace(u'\u0028\u9ad8\u6e05\u56fe\u96c6\u0029', '').strip()  # u'.图'
+                title = title.replace(u'\u7ec4\u56fe\uff1a', '').strip()                    # u'组图：'
+                title = title.replace(u'\u9ad8\u6e05\u56fe\uff1a', '').strip()              # u'高清图：'
+                title = title.replace(u'\u0028\u7ec4\u56fe\u0029', '').strip()              # u'(组图)'
+                title = title.replace(u'\u002e\u56fe', '').strip()
+            except IndexError:
+                title = ''
+            uri = it[1]
+
+            # if ('video' not in uri) and ('photo' not in uri):
+            uris_titles[uri] = title
+        return uris_titles
