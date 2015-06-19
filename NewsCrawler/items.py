@@ -8,6 +8,15 @@
 from scrapy.item import Item, Field
 
 
+class SpecialItem(Item):
+    """
+    Hold the list of url-title from special start url.
+    """
+    special = Field()               # b                             # item type
+    start_url = Field()             # str                           # 专题抓取起始网址
+    urls = Field()                  # list                          # 专题新闻网址列表
+
+
 class ListItem(Item):
     """
     Hold the list of urls from start url.
