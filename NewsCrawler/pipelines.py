@@ -71,8 +71,10 @@ class ListPipeline(object):
 
         # for special news, inited in special pipeline.
         # this start_url is the special url, not from spider setup.
-        start_url, special_url, special_title = \
-            self.r.hmget(start_url, ('start_url', 'special_url', 'special_title'))
+        special_url, special_title = \
+            self.r.hmget(start_url, ('special_url', 'special_title'))
+        if special_url and special_title:
+            start_url = self.r.hget(start_url, 'start_url')
 
         info = self.get_info_by_start_url(start_url)
         if not info:
