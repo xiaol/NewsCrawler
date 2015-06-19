@@ -28,8 +28,9 @@ DOWNLOADER_MIDDLEWARES = {
 EXTENSIONS = {'scrapy.contrib.feedexport.FeedExporter': None}
 
 ITEM_PIPELINES = {
-    'NewsCrawler.pipelines.ListPipeline': 200,
-    'NewsCrawler.pipelines.ContentPipeline': 201,
+    'NewsCrawler.pipelines.SpeicalPipeline': 200,
+    'NewsCrawler.pipelines.ListPipeline': 201,
+    'NewsCrawler.pipelines.ContentPipeline': 202,
 }
 
 SLYDUPEFILTER_ENABLED = False
