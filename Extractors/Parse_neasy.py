@@ -19,7 +19,10 @@ class Parser(object):
 
     @classmethod
     def get_title(cls, root):
-        attrs = [{'attr': 'class', 'value': 'article-title'}]
+        attrs = [
+            {'attr': 'class', 'value': 'article-title'},
+            {'attr': 'class', 'value': 'atitle tCenter'},
+        ]
         tag = Extractor.get_ment_by_attrs(root, attrs)
         if tag is not None:
             tag = tag.text
@@ -40,7 +43,9 @@ class Parser(object):
 
     @classmethod
     def get_origin(cls, root):
-        attrs = [{'attr': 'class', 'value': 'article-source'}]
+        attrs = [
+            {'attr': 'class', 'value': 'article-source'},
+            ]
         origin = Extractor.get_ment_by_attrs(root, attrs)
         if origin is not None:
             origin = origin.text_content()
@@ -66,8 +71,9 @@ class Parser(object):
 
     @classmethod
     def get_date(cls, root):
-        attrs = [{'attr': 'class', 'value': 'article-time'},
-                 ]
+        attrs = [
+            {'attr': 'class', 'value': 'article-time'},
+            ]
         date = Extractor.get_ment_by_attrs(root, attrs)
         if date is not None:
             date = date.text_content()
@@ -85,8 +91,10 @@ class Parser(object):
     def get_content(cls, url, root):
         picli = []
 
-        attrs = [{'attr': 'class', 'value': 'article-body'},
-                 ]
+        attrs = [
+            {'attr': 'class', 'value': 'article-body'},
+            {'attr': 'class', 'value': 'content'},
+            ]
         conts = Extractor.get_ment_by_attrs(root, attrs)
 
         # print 'conts:', conts
@@ -112,6 +120,8 @@ class Parser(object):
                 continue
             if 'class' in child.attrib and child.attrib['class'] == 'f_center':
                 continue
+            if 'class' in child.attrib and child.attrib['class'] == 'fix-break-word':
+                break
 
             # video frame
             if 'class' in child.attrib and child.attrib['class'] == 'finVideo':
@@ -122,6 +132,9 @@ class Parser(object):
                 # image
                 img = child.get('src') or child.get('alt_src')
                 if img and img not in dedupe:
+                    if 's.cimg.163.com/i/' in img and '.jpg.' in img:
+                        img = img.replace('s.cimg.163.com/i/', '')
+                        img = img.split('.jpg.')[0] + '.jpg'
                     item[str(len(contents))]['img'] = img
                     contents.append(item)
                     dedupe.add(img)
@@ -140,6 +153,10 @@ class Parser(object):
 
             # news content
             if child.tag == 'p':
+                img = child.find('img')
+                if img is not None:
+                    # print 'img txt'
+                    continue
                 txt = child.text_content()
                 txt = txt.strip() if txt else None
                 if txt and txt not in dedupe:
