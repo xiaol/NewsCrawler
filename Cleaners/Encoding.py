@@ -10,6 +10,7 @@
 import types
 import datetime
 from decimal import Decimal
+from bs4 import BeautifulSoup
 
 
 class DjangoUnicodeDecodeError(UnicodeDecodeError):
@@ -141,15 +142,19 @@ def encode_by_encoding(value, encoding='utf-8'):
     return value
 
 
-
 def encode_value(value, encoding='utf-8'):
     string_org = value
+    # try:
+    #     value = encode_by_encoding(value, encoding)
+    # except TypeError:
+    #     value = smart_unicode(value)
+    # except (UnicodeEncodeError, DjangoUnicodeDecodeError):
+    #     value = smart_str(value)
+
     try:
-        value = encode_by_encoding(value, encoding)
-    except TypeError:
-        value = smart_unicode(value)
-    except (UnicodeEncodeError, DjangoUnicodeDecodeError):
-        value = smart_str(value)
+        encoding = value.encoding
+        soup = BeautifulSoup(value.body, "lxml", from_encoding=encoding)
+        value = str(soup)
     except Exception:
         value = string_org
     return value
