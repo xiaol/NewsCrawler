@@ -21,15 +21,15 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ContentSpiderSinaRanking(Spider):
+class ContentSpiderSinaNews(Spider):
 
-    name = 'content_spider_sina_ranking'
-    qname = 'sina_ranking:content'
+    name = 'content_spider_sina_news'
+    qname = 'sina_news:content'
     pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://news.sina.cn/gn/2015-06-19/detail-ifxefuqy9937247.d.html?vt=4&pos=8&cid=56261',
+    #     'http://photo.sina.cn/album?vt=4&pos=3&ch=1&sid=2841&aid=85686',
     # ]
 
     def start_requests(self):
@@ -45,7 +45,7 @@ class ContentSpiderSinaRanking(Spider):
         source = response.body
         root = soup.fromstring(source)
 
-        # Tree convert by htmlparse for video
+        # Tree convert by htmlparse for video pages.
         tree = lxml.html.fromstring(source)
 
         item['url'] = response.url
