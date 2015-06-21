@@ -35,20 +35,21 @@ class ListSpiderSohuNewsImportant(Spider):
     # 体育排行：http://m.sohu.com/c/515/
     # 娱乐排行：http://m.sohu.com/c/516/
     # 财经排行：http://m.sohu.com/c/518/
-    # start_urls = ['http://m.sohu.com/c/459/',
-    #               'http://m.sohu.com/c/478/',
-    #               'http://m.sohu.com/c/461/',
-    #               'http://m.sohu.com/c/515/',
-    #               'http://m.sohu.com/c/516/',
-    #               'http://m.sohu.com/c/518/'
-    #               ]
+    start_urls = [
+        # 'http://m.sohu.com/c/459/',
+        # 'http://m.sohu.com/c/478/',
+        # 'http://m.sohu.com/c/461/',
+        # 'http://m.sohu.com/c/515/',
+        # 'http://m.sohu.com/c/516/',
+        # 'http://m.sohu.com/c/518/',
+        ]
 
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()
