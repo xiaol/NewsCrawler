@@ -23,20 +23,21 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderSinaRanking(Spider):
+class ListSpiderSinaNews(Spider):
 
-    name = 'list_spider_sina_ranking'
-    qname = 'sina_ranking'
+    name = 'list_spider_sina_news'
+    qname = 'sina_news'
     pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
     r = redis.Redis(connection_pool=pool)
 
-    # 新浪排行：
+    # 新浪新闻：
     # 国内：http://news.sina.cn/gn?vt=4&pos=8
     # 社会：http://news.sina.cn/sh?vt=4&pos=8
+    # 娱乐：http://ent.sina.cn/?vt=4&pos=108
+    # 体育：http://sports.sina.cn/?vt=4&pos=108
+    # 军事：http://mil.sina.cn/?vt=4&pos=108
     # 新浪财经：http://finance.sina.cn/roll.d.html?vt=4&cid=76478&rollCid=76478
     # start_urls = [
-    #     'http://news.sina.cn/gn?vt=4&pos=8',
-    #     'http://news.sina.cn/sh?vt=4&pos=8',
     #     'http://finance.sina.cn/roll.d.html?vt=4&cid=76478&rollCid=76478',
     #     ]
 
@@ -63,8 +64,8 @@ class ListSpiderSinaRanking(Spider):
 
         uris_titles = self.clean(urls)
 
-        for k, v in uris_titles.iteritems():
-            print k, v
+        # for k, v in uris_titles.iteritems():
+        #     print k, v
 
         item['start_url'] = response.url
         item['urls'] = uris_titles
