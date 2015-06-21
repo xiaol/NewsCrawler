@@ -33,9 +33,11 @@ class ListSpiderSinaRanking(Spider):
     # 新浪排行：
     # 国内：http://news.sina.cn/gn?vt=4&pos=8
     # 社会：http://news.sina.cn/sh?vt=4&pos=8
+    # 新浪财经：http://finance.sina.cn/roll.d.html?vt=4&cid=76478&rollCid=76478
     # start_urls = [
     #     'http://news.sina.cn/gn?vt=4&pos=8',
     #     'http://news.sina.cn/sh?vt=4&pos=8',
+    #     'http://finance.sina.cn/roll.d.html?vt=4&cid=76478&rollCid=76478',
     #     ]
 
     def start_requests(self):

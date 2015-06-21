@@ -169,9 +169,6 @@ class Parser(object):
             qs.append('='.join(['vt', parm['vt'][0]]))
         qs.append('#column')
         api = '?'.join([uri, '&'.join(qs)])
-        # http://photo.sina.cn/album_1_2841_85617.htm?vt=4&pos=8&cid=56261&ch=1
-        # http://photo.sina.cn/aj/album?action=image&ch=1&sid=2841&aid=85617&w=722&h=675&dpr=2
-        # http://photo.sina.cn/aj/album?action=image&ch=1&cid=56261&vt=4&#column
         contents = []
         dedupe = set()
         conts = Reqs.mobile_req(api)
@@ -181,9 +178,12 @@ class Parser(object):
                 item = defaultdict(dict)
                 if cont['picurl'] not in dedupe:
                     item[str(conts.index(cont))]['img'] = cont['picurl']
+                    contents.append(item)
                     dedupe.add(cont['picurl'])
-                if cont['intro'] not in dedupe:
+                if cont['intro'] and cont['intro'] not in dedupe:
+                    item = defaultdict(dict)
                     item[str(conts.index(cont))]['img_info'] = cont['intro']
+                    contents.append(item)
                     dedupe.add(cont['intro'])
         return contents
 
@@ -217,7 +217,6 @@ class Parser(object):
                     item[str(len(contents))]['img'] = img
                     contents.append(item)
                     dedupe.add(img)
-
                     txt = child.get('alt')
                     txt = txt.strip() if txt else None
                     if txt and txt not in dedupe:
