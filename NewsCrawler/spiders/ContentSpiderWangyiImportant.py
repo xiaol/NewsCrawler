@@ -28,7 +28,7 @@ class ContentSpiderWangyiImportant(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://news.163.com/15/0616/11/AS7SEKG00001124J.html',
+    #     'http://3g.163.com/news/15/0621/20/ASLMFCME00011229.html',
     # ]
 
     def start_requests(self):
