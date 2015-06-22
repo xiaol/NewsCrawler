@@ -47,7 +47,7 @@ class Extractor(object):
             if len(ment):
                 print 'sel-->', '//*[@tag="%s"]' % tag
                 print 'result-->', ment[0].text_content()
-                return ment[0].text_content()
+                return ment[0]
         return None
 
     @classmethod
