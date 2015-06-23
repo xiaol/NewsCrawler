@@ -13,7 +13,6 @@ import simplejson as json
 from scrapy.spider import Spider
 from collections import defaultdict
 from lxml.html import soupparser as soup
-from Extractors.Parse_xueqiu import Parser
 from Cleaners.Cleaners import Cleaners
 from Cleaners.Encoding import encode_value
 from Extractors.Extractor import Extractor
