@@ -12,7 +12,7 @@ import redis
 from scrapy.spider import Spider
 from lxml.html import soupparser as soup
 from Cleaners.Cleaners import Cleaners
-from Extractors.Parse_xueqiu import Parser
+from Extractors.Parse_shejipi import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
 
