@@ -23,7 +23,7 @@ class Parser(object):
         tag = Extractor.get_ment_by_attrs(root, attrs)
         if tag is not None:
             tag = tag.text_content()
-            tag = tag.split('\n')[0].strip()
+            tag = tag.split('\n')[1].strip()
             return tag
         else:
             return None
