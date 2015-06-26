@@ -18,7 +18,8 @@ class Dates(object):
 
     @classmethod
     def today(cls, formater='%Y-%m-%d'):
-        return cls.date.strftime(formater)
+        date = datetime.date.today()
+        return date.strftime(formater)
 
     @classmethod
     def reledate_by_day(cls, day, formater='%Y-%m-%d'):
