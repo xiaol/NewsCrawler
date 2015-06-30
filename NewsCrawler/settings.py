@@ -31,6 +31,7 @@ ITEM_PIPELINES = {
     'NewsCrawler.pipelines.SpeicalPipeline': 200,
     'NewsCrawler.pipelines.ListPipeline': 201,
     'NewsCrawler.pipelines.ContentPipeline': 202,
+    'NewsCrawler.pipelines.RelatedPipeline': 203,
 }
 
 SLYDUPEFILTER_ENABLED = False
