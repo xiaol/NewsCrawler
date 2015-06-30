@@ -175,11 +175,44 @@ class ContentPipeline(object):
             db.insert(table)
 
             self.r.hmset(url, {
+                'flag': 1,
                 'imgnum': item['imgnum'],
-                'flag': 1
+                'content': item['content'],
+                'title': table['title'],
             })
+
+            if channel_id == '0':                       # call related spider
+                self.r.lpush('related_spider', url)
 
         except Exception, e:
             raise DropItem("Drop item with Insert NewsItems err: ", e)
+
+        return item
+
+
+class RelatedPipeline(object):
+    """
+    Process the items from related spiders.
+    Save the related items to mongodb by url.
+    """
+    def __init__(self):
+        self.pool = redis.ConnectionPool(host='localhost', port=6379)
+        self.r = redis.Redis(connection_pool=self.pool)
+
+    def process_item(self, item, spider):
+        if 'related' not in spider.name:
+            return item
+        start_url = item['start_url']
+        items = dict(item['urls'])
+
+        try:
+            news_items = Mongo('NewsItems')
+            db = news_items.table
+            news = db.find_one({"url": start_url})
+            if news:
+                news.update(items)
+                db.save(news)
+        except Exception, e:
+            raise DropItem("Drop item when update related Items with err: ", e)
 
         return item
