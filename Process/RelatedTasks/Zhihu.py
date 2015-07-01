@@ -10,6 +10,7 @@
 import re
 import sys
 from lxml import etree
+from lxml.html import soupparser as soup
 from Reqs.Reqs import Reqs
 
 reload(sys)
@@ -34,7 +35,7 @@ class Zhihu(object):
         pat = re.compile('<[^<>]+?>')
         # pat_user = re.compile('<[^<>]+?>|[,，]')
 
-        content = etree.HTML(content)
+        content = soup.fromstring(content)
         elements = content.xpath('//li[@class="item clearfix"]')
         zhihus = []
         for element in elements:
@@ -44,7 +45,7 @@ class Zhihu(object):
                 title = re.sub(pat, '', raw_content_title)
                 url = "http://www.zhihu.com" + element.xpath('./div[@class="title"]/a[1]/@href')[0]
                 user = element.xpath('.//a[@class="author"]/text()')[0]
-                zhihu = {"title": title, "url": url, "user": user}
+                zhihu = {"title": unicode(title), "url": url, "user": unicode(user)}
                 zhihus.append(zhihu)
             except Exception:
                 continue
