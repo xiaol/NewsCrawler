@@ -28,7 +28,7 @@ class ContentSpiderSohuNewsImportant(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://m.sohu.com/n/556353845/',
+    #     'http://m.sohu.com/n/415871082/',
     # ]
 
     def start_requests(self):
