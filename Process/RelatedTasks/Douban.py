@@ -25,7 +25,7 @@ class Douban(object):
             if url_tag:
                 tag_url_pairs = [tag, url_tag]
                 douban_tags.append(tag_url_pairs)
-        return douban_tags
+        return {'douban': douban_tags}
 
     @staticmethod
     def extract_douban(tag):
@@ -41,7 +41,7 @@ class Douban(object):
             root = soup.fromstring(cont)
             element_href = root.xpath('//div[@class="result"]/div[@class="content"]'
                                       '/div[@class="title"]/descendant::a[@target="_blank"]/@href')[0]
-            return {'douban': element_href} if element_href else None
+            return element_href or None
         except Exception as e:
             print "douban tag request error==>", e
             return None
