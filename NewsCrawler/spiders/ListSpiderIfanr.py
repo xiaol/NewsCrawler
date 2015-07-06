@@ -33,9 +33,7 @@ class ListSpiderIfanr(Spider):
 
     # 爱范儿：API
     # start_urls = [
-    #     'http://www.ifanr.com/api/v3.0/?action=latest&posts_per_page=10&post_type=news&excerpt_length=40'
-    #     '&thumb_size=680xauto&page=1&offset=0&cancel_cache=false&add_dasheng_fields=true&'
-    #     'appkey=k0umfuztmirn5v73z3ij&timestamp=1435052619&sign=a0cd435e70efacb3eab60c7571fdee04&_=1435052626335',
+    #     'http://www.ifanr.com/news'
     # ]
 
     def start_requests(self):
@@ -49,18 +47,15 @@ class ListSpiderIfanr(Spider):
         item = ListItem()
 
         source = response.body
-        try:
-            data = json.loads(source)
-            data = data.get('data')
-        except TypeError:
-            return
 
+        root = soup.fromstring(source)
+        xp = '//*[@class="articles-list"]/a'
+        urls = Extractor.get_list(root, xp)
         uris_titles = defaultdict(str)
-        for it in data:
-            url = it.get('link')
-            title = it.get('title')
-            if url and title:
-                uris_titles[url] = title
+        for it in urls:
+            url = it[1]
+            title = it[0]
+            uris_titles[url] = ''
 
         # for k, v in uris_titles.iteritems():
         #     print k, v
