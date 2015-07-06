@@ -56,10 +56,10 @@ class ListSpiderPansci(Spider):
             title = it[0]
             uris_titles[url] = ''
 
-        for k, v in uris_titles.iteritems():
-            print k, v
+        # for k, v in uris_titles.iteritems():
+        #     print k, v
 
-        # item['start_url'] = response.url
-        # item['urls'] = uris_titles
+        item['start_url'] = response.url
+        item['urls'] = uris_titles
 
         yield item
