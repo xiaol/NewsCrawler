@@ -86,6 +86,13 @@ class Parser(object):
     def get_content(cls, url, root):
         picli = []
 
+        img_attrs = [
+            {'attr': 'class', 'value': 'header-picture'},
+        ]
+        imgs = Extractor.get_ment_by_attrs(root, img_attrs)
+        if imgs is not None:
+            picli += cls.cont_format(imgs)
+
         attrs = [
             {'attr': 'id', 'value': 'entry-content'},
             ]
