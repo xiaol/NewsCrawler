@@ -43,7 +43,7 @@ class Parser(object):
         origin = Extractor.get_ment_by_attrs(root, attrs)
         if origin is not None:
             origin = origin.text_content()
-            origin = origin.split()[0]
+            origin = origin.split()[0] if origin else None
             return origin
         else:
             return None
