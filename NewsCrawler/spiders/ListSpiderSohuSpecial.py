@@ -14,6 +14,7 @@ from scrapy.spider import Spider
 from collections import defaultdict
 from lxml.html import soupparser as soup
 from Cleaners.Cleaners import Cleaners
+from Cleaners.Encoding import encode_value
 from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem, SpecialItem
@@ -55,7 +56,7 @@ class ListSpiderSohuSpecial(Spider):
             uris_titles[url] = title
 
         for k, v in uris_titles.iteritems():
-            print k, v
+            # print k, v
             yield scrapy.Request(k, callback=self.parse_item)
 
         item['special'] = True
@@ -68,7 +69,7 @@ class ListSpiderSohuSpecial(Spider):
     def parse_item(response):
         item = ListItem()                           # list item
 
-        source = Cleaners.clean(response.body)
+        source = encode_value(response)
         root = soup.fromstring(source)
 
         xp = '//*[@class="article-list"]/div/h3/a'
@@ -86,10 +87,10 @@ class ListSpiderSohuSpecial(Spider):
                 news_id = None
             if news_id:
                 mob_url = ''.join(['http://m.sohu.com/n/', news_id, '/'])
-                uris_titles[mob_url] = title
+                uris_titles[mob_url] = unicode(title)
 
-        for k, v in uris_titles.iteritems():
-            print k, v
+        # for k, v in uris_titles.iteritems():
+        #     print k, v
 
         item['start_url'] = response.url            # This url is the special url.
         item['urls'] = uris_titles
