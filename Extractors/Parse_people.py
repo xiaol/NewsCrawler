@@ -12,8 +12,9 @@ from Extractor import Extractor
 from Reqs.Reqs import Reqs
 from collections import defaultdict
 import simplejson as json
+from bs4 import BeautifulSoup
 from lxml.html import soupparser as soup
-
+from Cleaners.Encoding import encode_value
 
 class Parser(object):
 
@@ -102,7 +103,14 @@ class Parser(object):
                 source = Reqs.mobile_req(url)
                 if not source:
                     continue
-                source = source.content
+                print source.encoding
+                # source = source.content
+                try:
+                    sp = BeautifulSoup(source.content, "lxml", from_encoding='gb18030')
+                    source = str(sp)
+                except:
+                    source = source.content
+
                 source = soup.fromstring(source)
 
                 # a content with a image before p_content.
