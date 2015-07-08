@@ -93,14 +93,14 @@ class Parser(object):
 
         # print 'conts:', conts
         if conts:
-            picli += cls.cont_format(conts)
+            picli += cls.cont_format(conts, url)
         else:
             return picli
 
         return picli
 
     @staticmethod
-    def cont_format(node):
+    def cont_format(node, url):
         contents = []
         dedupe = set()
 
@@ -125,6 +125,8 @@ class Parser(object):
             if child.tag == 'img':
                 img = child.get('src') or child.get('alt_src')
                 if img and img not in dedupe:
+                    if not img.startswith('http'):
+                        img = url.replace(url.split('/')[-1], img)
                     item[str(len(contents))]['img'] = img
                     contents.append(item)
                     dedupe.add(img)
