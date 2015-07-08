@@ -132,6 +132,8 @@ class Parser(object):
             if child.tag == 'img':
                 img = child.get('src') or child.get('alt_src')
                 if img and img not in dedupe:
+                    if not img.startswith('http:'):
+                        img = ''.join(['http://cdn.youxiputao.com', img])
                     item[str(len(contents))]['img'] = img
                     contents.append(item)
                     dedupe.add(img)
