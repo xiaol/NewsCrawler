@@ -118,6 +118,8 @@ class Parser(object):
             print 'Tag', child.tag, 'ATTR', child.attrib
 
             # tags filter
+            if 'id' in child.attrib and child.attrib['id'] == 'size':
+                continue
             if 'style' in child.attrib and child.attrib['style'] == 'clear:both':
                 break
 
@@ -138,6 +140,18 @@ class Parser(object):
 
             # news content
             if child.tag == 'p':
+
+                # content
+                txt = child.text_content()
+                txt = txt.strip() if txt else None
+                if txt and txt not in dedupe:
+                    item[str(len(contents))]['txt'] = txt
+                    contents.append(item)
+                    dedupe.add(txt)
+                continue
+
+            # news content
+            if child.tag == 'div':
 
                 # content
                 txt = child.text_content()
