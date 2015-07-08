@@ -110,14 +110,15 @@ class Parser(object):
                 continue
             if 'id' in child.attrib and child.attrib['id'] == 'js_toobar':
                 break
-
+            if child.tag == 'fieldset' and 'class' in child.attrib and child.attrib['class'] == 'comment_quote':
+                break
             # video frame
             if 'class' in child.attrib and child.attrib['class'] == 'finVideo':
                 continue
 
             # image frame
             if child.tag == 'img':
-                img = child.get('src') or child.get('data-src')
+                img = child.get('data-src') or child.get('src')
                 if img and img not in dedupe:
                     item[str(len(contents))]['img'] = img
                     contents.append(item)
