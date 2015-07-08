@@ -119,7 +119,7 @@ class Parser(object):
 
             # image frame
             if child.tag == 'img':
-                img = child.get('src') or child.get('alt_src')
+                img = child.get('original') or child.get('src')
                 if img and img not in dedupe:
                     item[str(len(contents))]['img'] = img
                     contents.append(item)
