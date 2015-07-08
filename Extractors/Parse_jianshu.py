@@ -7,6 +7,7 @@
     Date:    15/6/9
 """
 
+from lxml import etree
 from Dates.Dates import Dates
 from Extractor import Extractor
 from Reqs.Reqs import Reqs
@@ -133,7 +134,7 @@ class Parser(object):
                 # content
                 txt = child.text_content()
                 txt = txt.strip() if txt else None
-                if txt and txt not in dedupe:
+                if txt and len(txt) < 1000 and txt not in dedupe:
                     item[str(len(contents))]['txt'] = txt
                     contents.append(item)
                     dedupe.add(txt)
