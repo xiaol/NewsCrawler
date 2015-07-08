@@ -12,6 +12,7 @@ import redis
 from scrapy.spider import Spider
 from lxml.html import soupparser as soup
 from Cleaners.Cleaners import Cleaners
+from Cleaners.Encoding import encode_value
 from Extractors.Parse_people import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
@@ -41,7 +42,10 @@ class ContentSpidePeopleImportant(Spider):
     def parse(self, response):
         item = ContItem()
 
-        source = response.body
+        if response.encoding != 'utf-8':
+            source = encode_value(response)
+        else:
+            source = response.body
         root = soup.fromstring(source)
 
         item['url'] = response.url
