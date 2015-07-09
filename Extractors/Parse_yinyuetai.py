@@ -86,27 +86,31 @@ class Parser(object):
     def get_content(cls, url, root):
         picli = []
 
-        attrs = [{'attr': 'class', 'value': 'main'},
-                 ]
+        attrs = [
+            {'attr': 'class', 'value': 'main'},
+        ]
         conts = Extractor.get_ment_by_attrs(root, attrs)
 
         # print 'conts:', conts
         if conts:
-            picli += cls.cont_format(conts)
+            picli += cls.cont_format(conts, picli)
 
         # info
         attrs = [{'attr': 'class', 'value': 'info'},
                  ]
         conts = Extractor.get_ment_by_attrs(root, attrs)
         if conts:
-            picli += cls.cont_format(conts)
+            picli += cls.cont_format(conts, picli)
 
         return picli
 
     @staticmethod
-    def cont_format(node):
+    def cont_format(node, picli):
         contents = []
         dedupe = set()
+        if picli:
+            for item in picli:
+                dedupe.add(item.values()[0].values()[0])
 
         # Content info with tag is p, delete it.
         try:
@@ -142,13 +146,25 @@ class Parser(object):
                     item[str(len(contents))]['img'] = img
                     contents.append(item)
                     dedupe.add(img)
+                continue
 
-            if child.tag == 'span':
-                txt = child.text
+            if child.tag == 'p':
+                txt = child.text_content()
                 txt = txt.strip() if txt else None
-                if txt and txt not in dedupe:
+                if txt and txt not in dedupe \
+                        and txt != u'\u7b2c  \u5f20' and txt != u'\u5f20':
                     item[str(len(contents))]['txt'] = txt
                     contents.append(item)
                     dedupe.add(txt)
+                continue
+
+            # if child.tag == 'span':
+            #     txt = child.text
+            #     txt = txt.strip() if txt else None
+            #     if txt and txt not in dedupe:
+            #         item[str(len(contents))]['txt'] = txt
+            #         contents.append(item)
+            #         dedupe.add(txt)
+            #     continue
 
         return contents or []
