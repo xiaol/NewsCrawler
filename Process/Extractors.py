@@ -15,11 +15,11 @@ import math
 import operator
 from jieba.analyse import extract_tags
 
-from Process import analyse
+# from Process import analyse
 from TextRank4ZH.textrank4zh import TextRank4Keyword, TextRank4Sentence
 
-analyse.initialize()
-analyse.load_stopdict()
+# analyse.initialize()
+# analyse.load_stopdict()
 
 class Extractor(object):
 
@@ -107,7 +107,7 @@ class Extractor(object):
 
 class Gist(object):
 
-    def __init__(self, stop_words_file='/Users/ZG/Project/Lieying/NewsCrawler/Process/TextRank4ZH/stopword.data'):
+    def __init__(self, stop_words_file='/work/pro/NewsCrawler/Process/TextRank4ZH/stopword.data'):
         self.stop_words_file = stop_words_file
         self.tr4w = TextRank4Keyword(self.stop_words_file)  # 导入停止词
 
