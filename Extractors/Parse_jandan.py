@@ -133,7 +133,7 @@ class Parser(object):
                 # content
                 txt = child.text_content()
                 txt = txt.strip() if txt else None
-                if txt and txt not in dedupe:
+                if txt and txt not in dedupe and not txt.startswith(u"# \u76f8\u5173\u524d\u6587\uff1a"):
                     item[str(len(contents))]['txt'] = txt
                     contents.append(item)
                     dedupe.add(txt)

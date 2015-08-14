@@ -29,7 +29,7 @@ class ContentSpidePeopleImportant(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://auto.people.com.cn/n/2015/0618/c1005-27173942.html',
+    #     'http://media.people.com.cn/n/2015/0707/c120837-27263561.html',
     # ]
 
     def start_requests(self):

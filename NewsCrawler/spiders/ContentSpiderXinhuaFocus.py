@@ -28,7 +28,7 @@ class ContentSpiderXinhuaFocus(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://news.xinhuanet.com/food/2015-06/18/c_1115652943.htm',
+    #     'http://news.xinhuanet.com/world/2015-07/07/c_127994601.htm',
     # ]
 
     def start_requests(self):

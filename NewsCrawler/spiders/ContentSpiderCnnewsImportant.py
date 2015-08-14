@@ -28,7 +28,7 @@ class ContentSpiderCnnewsImportant(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://www.chinanews.com/m/sh/2015/06-18/7352764.shtml',
+    #     'http://www.chinanews.com/m/mil/2015/07-07/7389630.shtml',
     # ]
 
     def start_requests(self):

@@ -129,7 +129,7 @@ class Parser(object):
                 continue
 
             # news content
-            if child.tag == 'p':
+            if child.tag in ['p', 'h2', 'h3', 'h4', 'h5', 'h6', 'li']:
 
                 # content
                 txt = child.text_content()

@@ -28,7 +28,7 @@ class ContentSpiderJiecao(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://news.jiecao.fm/client/article/detail.htm?v=2.6.2&id=peN7bnjw&down=true',
+    #     'http://news.jiecao.fm/client/article/detail.htm?v=2.6.2&id=me2rXWeL&down=true',
     # ]
 
     def start_requests(self):

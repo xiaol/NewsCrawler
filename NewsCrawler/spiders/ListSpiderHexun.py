@@ -55,6 +55,8 @@ class ListSpiderHexun(Spider):
         for it in urls:
             url = it[1]
             title = it[0]
+            if u"\u62db\u6807\u516c\u544a" in title:
+                continue
             url = url.replace('http://news.hexun.com', 'http://m.hexun.com/news')
             uris_titles[url] = title
 

@@ -131,9 +131,39 @@ class Parser(object):
 
             # news content
             if child.tag == 'p':
+                # content
+
+                brs = child.findall('br')
+                if brs:
+                    txt = child.text
+                    txt = txt.strip() if txt else None
+                    if txt and txt not in dedupe:
+                        item = defaultdict(dict)
+                        item[str(len(contents))]['txt'] = txt
+                        contents.append(item)
+                        dedupe.add(txt)
+
+                    for br in brs:
+                        txt = br.tail
+                        txt = txt.strip() if txt else None
+                        if txt and txt not in dedupe:
+                            item = defaultdict(dict)
+                            item[str(len(contents))]['txt'] = txt
+                            contents.append(item)
+                            dedupe.add(txt)
+                else:
+                    txt = child.text_content()
+                    txt = txt.strip() if txt else None
+                    if txt and txt not in dedupe:
+                        item[str(len(contents))]['txt'] = txt
+                        contents.append(item)
+                        dedupe.add(txt)
+                continue
+
+            if child.tag == 'br':
 
                 # content
-                txt = child.text_content()
+                txt = child.tail
                 txt = txt.strip() if txt else None
                 if txt and txt not in dedupe:
                     item[str(len(contents))]['txt'] = txt

@@ -119,7 +119,7 @@ class Parser(object):
 
             # image frame
             if child.tag == 'img':
-                img = child.get('src') or child.get('alt_src')
+                img = child.get('data-original') or child.get('src')
                 if img and img not in dedupe:
                     item[str(len(contents))]['img'] = img
                     contents.append(item)
@@ -132,7 +132,7 @@ class Parser(object):
                 # content
                 txt = child.text_content()
                 txt = txt.strip() if txt else None
-                if txt and txt not in dedupe:
+                if txt and txt not in dedupe and not txt.startswith(u"\u539f\u6587\u94fe\u63a5"):
                     item[str(len(contents))]['txt'] = txt
                     contents.append(item)
                     dedupe.add(txt)

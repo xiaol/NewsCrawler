@@ -28,7 +28,7 @@ class ContentSpiderHexun(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://m.hexun.com/news/2015-06-23/176936129.html',
+    #     'http://m.hexun.com/news/2015-07-03/177246661.html',
     # ]
 
     def start_requests(self):

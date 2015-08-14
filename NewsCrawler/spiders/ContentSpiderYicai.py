@@ -28,7 +28,7 @@ class ContentSpiderYicai(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://www.yicai.com/news/bd/2015/07/4639122.html',
+    #     'http://www.yicai.com/news/bd/2015/07/4641803.html',
     # ]
 
     def start_requests(self):

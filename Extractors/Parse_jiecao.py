@@ -86,7 +86,7 @@ class Parser(object):
     def get_content(cls, url, root):
         picli = []
 
-        tags = ['body',]
+        tags = ['body', ]
         conts = Extractor.get_ment_by_tags(root, tags)
 
         # print 'conts:', conts

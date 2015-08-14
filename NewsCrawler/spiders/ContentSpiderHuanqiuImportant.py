@@ -31,7 +31,7 @@ class ContentSpiderHuanqiuImportant(Spider):
 
     # start_urls = [
     #     # 'http://m.huanqiu.com/view.html?id=1566988&v=9',    # image page
-    #     'http://m.huanqiu.com/view.html?id=1567451&v=9',    # common page
+    #     'http://m.huanqiu.com/view.html?id=2081757&v=9',    # common page
     # ]
 
     def start_requests(self):

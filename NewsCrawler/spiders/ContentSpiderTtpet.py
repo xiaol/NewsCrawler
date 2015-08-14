@@ -28,7 +28,7 @@ class ContentSpiderTtpet(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://m.ttpet.com/zixun/detail-91037.html',
+    #     'http://m.ttpet.com/zixun/detail-91071.html',
     # ]
 
     def start_requests(self):

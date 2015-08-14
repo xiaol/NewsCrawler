@@ -19,10 +19,12 @@ class Parser(object):
 
     @classmethod
     def get_title(cls, root):
-        attrs = [{'attr': 'class', 'value': 'title'}]
-        tag = Extractor.get_ment_by_attrs(root, attrs)
+        attrs = ['title']
+        tag = Extractor.get_ment_by_tags(root, attrs)
         if tag is not None:
             tag = tag.text_content().strip()
+            if ' | ' in tag:
+                tag = tag.split(' | ')[0]
             return tag
         else:
             return None
@@ -84,6 +86,16 @@ class Parser(object):
     @classmethod
     def get_content(cls, url, root):
         picli = []
+
+        title_img_attrs = [{'attr': 'class', 'value': 'post-img'}, ]
+        title_img_node = Extractor.get_ment_by_attrs(root, title_img_attrs)
+        if title_img_node is not None:
+            if 'style' in title_img_node.attrib.keys():
+                attrib_style = title_img_node.attrib.get('style')
+                if attrib_style:
+                    title_src = attrib_style.replace('background-image: url(', '').replace(')', '')
+                    if title_src.startswith('http') and (title_src.endswith('jpg') or title_src.endswith('png')):
+                        picli.append({'0': {'img': title_src}})
 
         attrs = [{'attr': 'id', 'value': 'sc-container'},
                  ]

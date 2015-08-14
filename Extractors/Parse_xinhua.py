@@ -87,19 +87,40 @@ class Parser(object):
     def get_content(cls, url, root):
         picli = []
 
+        currpage_urls = set()
+        currpage_attrs = [{'attr': 'id', 'value': 'div_currpage'}, ]
+        currpage_node = Extractor.get_ment_by_attrs(root, currpage_attrs)
+        if currpage_node is not None:
+            print currpage_node.tag, currpage_node.attrib
+            for child in currpage_node.iter():
+                print 'Tag', child.tag, 'ATTR', child.attrib
+                if child.tag == 'a' and 'href' in child.attrib.keys():
+                    href = child.attrib.get('href')
+                    if href.startswith('http'):
+                        currpage_urls.add(child.attrib.get('href'))
+        if currpage_urls:
+            currpage_urls = sorted([url for url in currpage_urls])
+            print 'currpage_urls:', currpage_urls
+
         attrs = [
             {'attr': 'id', 'value': 'content'},
             {'attr': 'class', 'value': 'article'},
             {'attr': 'class', 'value': 'content00'},
-                 ]
+        ]
         conts = Extractor.get_ment_by_attrs(root, attrs)
 
         # print 'conts:', conts
         if conts:
             picli += cls.cont_format(conts, url)
-        else:
+        if not currpage_urls:
             return picli
 
+        for next_url in currpage_urls:
+            cont = Reqs.mobile_req(next_url)
+            if cont:
+                conts = Extractor.get_ment_by_attrs(soup.fromstring(cont.content), attrs)
+                if conts:
+                    picli += cls.cont_format(conts, next_url)
         return picli
 
     @staticmethod
@@ -151,7 +172,8 @@ class Parser(object):
                 # content
                 txt = child.text_content()
                 txt = txt.strip() if txt else None
-                if txt and txt not in dedupe:
+                if txt and txt not in dedupe and \
+                        (u"\u4e0a\u4e00\u9875" not in txt or u"\u4e0a\u4e00\u9875" not in txt):
                     item[str(len(contents))]['txt'] = txt
                     contents.append(item)
                     dedupe.add(txt)
