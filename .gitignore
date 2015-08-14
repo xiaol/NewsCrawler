@@ -67,3 +67,10 @@ dump.rdb
 
 # Test spiders
 /Extractors/Parse_mtime.py
+
+Controller/=0.6.5
+Controller/dbs/
+Controller/nohup.out
+dict.txt
+setup.py
+twistd.pid
