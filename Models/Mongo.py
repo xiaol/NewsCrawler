@@ -23,7 +23,7 @@ sys.setdefaultencoding('utf8')
 class Mongo(object):
 
     def __init__(self, colle, db='news_ver2'):
-        self.conn = pymongo.MongoReplicaSetClient("121.41.49.44:27017, 121.41.75.213:27017, 121.41.112.241:27017",
+        self.conn = pymongo.MongoReplicaSetClient("h44:27017, h213:27017, h241:27017",
                                                   replicaSet="myset",
                                                   read_preference=ReadPreference.SECONDARY)
         self.db = db

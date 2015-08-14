@@ -47,9 +47,9 @@ class RelatedSpider_(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://m.sohu.com/n/415871082/',
+    #     'http://m.sohu.com/n/411416712/'
     # ]
-
+    
     def start_requests(self):
         # formate start_urls from redis pop
         while 1:
