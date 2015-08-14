@@ -146,8 +146,9 @@ class Parser(object):
                 # content
                 txt = child.text_content()
                 txt = txt.strip() if txt else None
-                if txt and txt not in dedupe:
+                if txt:
                     txt = unicode(f2j(txt))
+                if txt and txt not in dedupe and txt != u"\u8d44\u6599\u6765\u6e90\uff1a":
                     item[str(len(contents))]['txt'] = txt
                     contents.append(item)
                     dedupe.add(txt)
@@ -160,8 +161,9 @@ class Parser(object):
                 # content
                 txt = child.text_content()
                 txt = txt.strip() if txt else None
-                if txt and txt not in dedupe:
+                if txt:
                     txt = unicode(f2j(txt))
+                if txt and txt not in dedupe and txt != u"\u8d44\u6599\u6765\u6e90\uff1a":
                     item[str(len(contents))]['txt'] = txt
                     contents.append(item)
                     dedupe.add(txt)

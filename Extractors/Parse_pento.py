@@ -159,4 +159,15 @@ class Parser(object):
                         last_t = t
                 continue
 
+            # news content
+            if child.tag == 'br':
+
+                # content
+                txt = child.tail
+                txt = txt.strip() if txt else None
+                if txt and txt not in dedupe:
+                    item[str(len(contents))]['txt'] = txt
+                    contents.append(item)
+                    dedupe.add(txt)
+
         return contents or []

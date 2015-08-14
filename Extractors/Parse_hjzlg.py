@@ -9,6 +9,7 @@
 
 from Dates.Dates import Dates
 from Extractor import Extractor
+from Cleaners import Converters
 from Reqs.Reqs import Reqs
 from collections import defaultdict
 import simplejson as json
@@ -140,14 +141,29 @@ class Parser(object):
 
             # news content
             if child.tag == 'p':
-
                 # content
-                txt = child.text_content()
-                txt = txt.strip() if txt else None
-                if txt and txt not in dedupe:
-                    item[str(len(contents))]['txt'] = txt
-                    contents.append(item)
-                    dedupe.add(txt)
+
+                brs = child.findall('br')
+                if brs:
+                    for br in brs:
+                        txt = br.tail
+                        txt = txt.strip() if txt else None
+                        if txt:
+                            txt = unicode(Converters.f2j(txt))
+                        if txt and txt not in dedupe:
+                            item = defaultdict(dict)
+                            item[str(len(contents))]['txt'] = txt
+                            contents.append(item)
+                            dedupe.add(txt)
+                else:
+                    txt = child.text_content()
+                    txt = txt.strip() if txt else None
+                    if txt:
+                        txt = unicode(Converters.f2j(txt))
+                    if txt and txt not in dedupe:
+                        item[str(len(contents))]['txt'] = txt
+                        contents.append(item)
+                        dedupe.add(txt)
                 continue
 
             # news content
@@ -156,6 +172,22 @@ class Parser(object):
                 # content
                 txt = child.text_content()
                 txt = txt.strip() if txt else None
+                if txt:
+                    txt = unicode(Converters.f2j(txt))
+                if txt and txt not in dedupe:
+                    item[str(len(contents))]['txt'] = txt
+                    contents.append(item)
+                    dedupe.add(txt)
+                continue
+
+                # news content
+            if child.tag == 'br':
+
+                # content
+                txt = child.tail
+                txt = txt.strip() if txt else None
+                if txt:
+                    txt = unicode(Converters.f2j(txt))
                 if txt and txt not in dedupe:
                     item[str(len(contents))]['txt'] = txt
                     contents.append(item)

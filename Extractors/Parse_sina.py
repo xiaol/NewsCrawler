@@ -219,7 +219,7 @@ class Parser(object):
                     dedupe.add(img)
                     txt = child.get('alt')
                     txt = txt.strip() if txt else None
-                    if txt and txt not in dedupe:
+                    if txt and len(txt)>5 and txt not in dedupe:
                         item = defaultdict(dict)
                         item[str(len(contents))]['img_info'] = txt
                         contents.append(item)
@@ -229,7 +229,7 @@ class Parser(object):
             if 'class' in child.attrib and child.attrib['class'] == 'imgMessage':
                 txt = child.text
                 txt = txt.strip() if txt else None
-                if txt and txt not in dedupe:
+                if txt and len(txt)>5 and txt not in dedupe:
                     item[str(len(contents))]['img_info'] = txt
                     contents.append(item)
                     dedupe.add(txt)
@@ -237,6 +237,15 @@ class Parser(object):
 
             if child.tag == 'p':
                 txt = child.text_content()
+                txt = txt.strip() if txt else None
+                if txt and txt not in dedupe:
+                    item[str(len(contents))]['txt'] = txt
+                    contents.append(item)
+                    dedupe.add(txt)
+                    continue
+
+            if child.tag == 'br':
+                txt = child.tail
                 txt = txt.strip() if txt else None
                 if txt and txt not in dedupe:
                     item[str(len(contents))]['txt'] = txt

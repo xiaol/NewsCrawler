@@ -139,10 +139,18 @@ class Parser(object):
             if child.tag == 'p':
                 txt = child.text_content()
                 txt = txt.strip() if txt else None
-                if txt and txt not in dedupe:
+                if txt and txt not in dedupe and not txt.startswith(u"\u4e0a\u4e00\u6761\uff1a"):
                     item[str(len(contents))]['txt'] = txt
                     contents.append(item)
                     dedupe.add(txt)
 
+            if child.tag == 'br':
+                txt = child.tail
+                txt = txt.strip() if txt else None
+                if txt and txt not in dedupe and not txt.startswith(u"\u4e0a\u4e00\u6761\uff1a"):
+                    item[str(len(contents))]['txt'] = txt
+                    contents.append(item)
+                    dedupe.add(txt)
 
         return contents or []
+
