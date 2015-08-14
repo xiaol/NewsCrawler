@@ -177,10 +177,30 @@ def query_news_by_setup():
                 print url + ' faield!'
                 continue
 
+def initializeRedisForDuplicate():
+    spider_setup = Mongo('SpiderSetup')
+    table_setup = spider_setup.table
+
+    news_items = Mongo('NewsItems')
+    table_news = news_items.table
+
+    for tb in table_setup.find():
+        pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+        r = redis.Redis(connection_pool=pool)
+        start_url = tb['start_url']
+        news_list = table_news.find({'start_url': start_url}).sort('create_time', pymongo.DESCENDING).limit(50)
+        for news in news_list:
+            url = news['url']
+            r.hset(url, 'flag', "1")
+            print "Set %s flag to 1." % url
+            time.sleep(0.5)
+
 
 if __name__ == '__main__':
     # insert_spider_setup()
     # update_spider_setup()
     # update_spider_setup_to_redis()
 
-    query_news_by_setup()
+    # query_news_by_setup()
+
+    initializeRedisForDuplicate()
