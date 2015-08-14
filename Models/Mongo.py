@@ -7,10 +7,17 @@
     Date:    15/6/10
 """
 
+import os
+import sys
+import time
 import redis
+import random
 import pymongo
 from collections import defaultdict
 from pymongo.read_preferences import ReadPreference
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 
 class Mongo(object):
@@ -32,19 +39,19 @@ def insert_spider_setup():
     spider_setup = Mongo('SpiderSetup')
     db = spider_setup.table
 
-    start_url = 'http://m.sohu.com/c/518/'
-    start_title = '搜狐要闻-财经'
-    channel = '头条焦点'
-    # channel_id = ''
-    frequency = '1'
+    start_url = 'http://toutiao.com/m3678008825/'
+    start_title = '今日头条-吴静儿囧事播报'
+    channel = '重口味'
+    channel_id = '2'
+    frequency = '15'
     status = '1'
-    qname = 'sohu_news_important'
+    qname = 'jinritoutiao'
 
     setup = {
         'start_url': start_url,             # 抓取起始网址
         'start_title': start_title,         # 抓取起始站名
         'channel': channel,                 # 所属频道名
-        # 'channel_id': channel_id,          # 所属频道ID
+        'channel_id': channel_id,           # 所属频道ID
         'frequency': frequency,             # 抓取频率/分钟
         'status': status,                   # 抓取状态/0=关闭、1=启动
         'qname': qname,                     # 消息名
@@ -87,6 +94,7 @@ def update_spider_setup_to_redis():
         items[tb['start_url']]['start_url'] = tb['start_url']
         items[tb['start_url']]['start_title'] = tb['start_title']
         items[tb['start_url']]['channel'] = tb['channel']
+        items[tb['start_url']]['channel_id'] = tb['channel_id']
     # print items
     for k, v in items.iteritems():
         print k, v
@@ -100,7 +108,79 @@ def update_spider_setup_to_redis():
     print type(eval(spider))
 
 
+def query_news_by_setup():
+    spider_setup = Mongo('SpiderSetup')
+    table_setup = spider_setup.table
+
+    news_items = Mongo('NewsItems')
+    table_news = news_items.table
+
+    for tb in table_setup.find():
+        start_url = tb['start_url']
+        news_list = table_news.find({'start_url': start_url}).sort('create_time', pymongo.DESCENDING).limit(50)
+
+        for news in news_list:
+            url = news['url']
+            create_time = news['create_time']
+            imgnum = news['imgnum']
+            channel_id = news['channel_id']
+            start_url = news['start_url']
+            start_title = news['start_title']
+            channel = news['channel']
+            content = []
+
+            contents = news['content']
+            for cont in contents:
+                item = cont.values()[0]
+
+                txt = item.get('txt')
+                if txt:
+                    txt = '<p>' + txt + '</p>'
+                    content.append(txt)
+                    continue
+
+                img = item.get('img')
+                if img:
+                    img = '<p><img src="'+img+"\" onerror=\"javascript:errorimg.call(this);\" class=\"lazy\"></p>"
+                    content.append(img)
+                    continue
+
+                img_info = item.get('img_info')
+                if img_info:
+                    txt = '<p>' + img_info + '</p>'
+                    content.append(txt)
+                    continue
+
+            html_source = [
+                ''.join(['<h2><a href=\"', url, '\">', url, '</a></h2>']),
+                ''.join(['<h2>' + 'create_time:' + str(create_time) + '</h2>']),
+                ''.join(['<h2>' + 'imgnum:' + str(imgnum) + '</h2>']),
+                ''.join(['<h2>' + 'channel_id:' + str(channel_id) + '</h2>']),
+                ''.join(['<h2>' + 'start_url:' + str(start_url) + '</h2>']),
+                ''.join(['<h2>' + 'start_title:' + start_title + '</h2>']),
+                ''.join(['<h2>' + 'channel:' + channel + '</h2>']),
+            ]
+            html_source += content
+            html_source = '\n'.join(html_source)
+
+            path = os.getcwd()
+            start_path = '/'.join([path, start_title]) + '/'
+            if not os.path.isdir(start_path):
+                os.mkdir(start_path)
+            html_name = ''.join([start_path, ''.join([str(int(time.time())), str(random.randint(1111, 9999))]), '.html'])
+            try:
+                f = open(html_name, 'w+')
+                f.write(html_source)
+                f.close()
+                print url + ' success!'
+            except:
+                print url + ' faield!'
+                continue
+
+
 if __name__ == '__main__':
     # insert_spider_setup()
     # update_spider_setup()
-    update_spider_setup_to_redis()
+    # update_spider_setup_to_redis()
+
+    query_news_by_setup()
