@@ -167,7 +167,7 @@ class Status(object):
 if __name__ == '__main__':
 
     flag = defaultdict(int)
-    for i in range(8, 21):
+    for i in range(8, 22, 2):
         flag[str(i)] = 1
 
     row = 1
