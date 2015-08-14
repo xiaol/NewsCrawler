@@ -80,12 +80,14 @@ def initialize(*args):
             del trie
             trie = None
         _curpath=os.path.normpath( os.path.join( os.getcwd(), os.path.dirname(__file__) )  )
-        abs_path = os.path.join(_curpath,dictionary)
+        # abs_path = os.path.join(_curpath,dictionary)
+        abs_path = DICTIONARY
         # for line in open('../extra_dict/stop_words.txt'):
         #     stop_word.append(line.strip())
         logger.debug("Building Trie..., from %s" % abs_path)
         t1 = time.time()
-        if abs_path == os.path.join(_curpath,"dict.txt"): #defautl dictionary
+        # if abs_path == os.path.join(_curpath,"dict.txt"): #defautl dictionary
+        if abs_path == DICTIONARY: #defautl dictionary
             cache_file = os.path.join(tempfile.gettempdir(),"jieba.cache")
         else: #customer dictionary
             cache_file = os.path.join(tempfile.gettempdir(),"jieba.user."+str(hash(abs_path))+".cache")

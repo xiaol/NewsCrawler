@@ -15,11 +15,11 @@ import math
 import operator
 from jieba.analyse import extract_tags
 
-from Process import analyse
+# from Process import analyse
 from TextRank4ZH.textrank4zh import TextRank4Keyword, TextRank4Sentence
 
-analyse.initialize()
-analyse.load_stopdict()
+# analyse.initialize()
+# analyse.load_stopdict()
 
 class Extractor(object):
 
@@ -54,56 +54,6 @@ class Extractor(object):
             tags.append(tag_rule_1)
         return tags
 
-    @classmethod
-    def extract_abstract(cls, doc, use_tf=True):
-        tf_map = {}
-        sorted_word = []
-        word_itertor = analyse.cut_with_stop(doc)
-        for word in word_itertor:
-            if word in tf_map:
-                tf_map[word] += 1
-            else:
-                tf_map[word] = 1
-        if use_tf:
-            sorted_word = sorted(tf_map.items(), key=operator.itemgetter(1), reverse=True)
-
-        keywords = sorted_word[0:10]
-        sentences = cls.extract_sentence_block(doc)
-        sentence_score_pairs = []
-        for sentence in sentences:
-            sentence_score_pairs.append([sentence, cls.score_sentence(keywords, sentence)])
-        sorted_sentence = sorted(sentence_score_pairs, key=operator.itemgetter(1), reverse=True)
-
-        return sorted_sentence[0][0]
-
-    @staticmethod
-    def extract_sentence_block(doc):
-        sentence_sep = re.compile(ur'[。\n!.！]')
-        result = []
-        doc_array = re.split(sentence_sep, doc.encode('utf8').decode("utf8"))
-        for elem in doc_array:
-            result.append(elem.strip())
-        return result
-
-    @staticmethod
-    def score_sentence(keywords, sentence):
-        word_itertor = analyse.cut_with_stop(sentence)
-        score = 0.0
-        count = 0
-        scale = 0.5
-        length_para = 0.00002
-        sen_length = 0
-        for word in word_itertor:
-            sen_length += 1
-            for keyWord in keywords:
-                if word == keyWord[0]:
-                    score += scale*keyWord[1]
-                    count += 1
-                    break
-        score += count*count
-        score /= (math.log(sen_length+1)+1)
-        score += length_para*sen_length
-        return score
 
 class Gist(object):
 
