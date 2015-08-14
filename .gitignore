@@ -63,8 +63,7 @@ dump.rdb
 
 # Tests
 /Tests
+/Removed
 
 # Test spiders
-/NewsCrawler/spiders/ListSpiderDuomi.py
-/NewsCrawler/spiders/ContentSpiderDuomi.py
-/NewsCrawler/spiders/ListSpiderSinaSpecial.py
+/Extractors/Parse_mtime.py
