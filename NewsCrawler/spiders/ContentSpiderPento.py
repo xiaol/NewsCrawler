@@ -28,7 +28,7 @@ class ContentSpiderPento(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://www.pento.cn/pin/32946404',
+    #     'http://www.pento.cn/pin/31601858',
     # ]
 
     def start_requests(self):
@@ -41,7 +41,7 @@ class ContentSpiderPento(Spider):
     def parse(self, response):
         item = ContItem()
 
-        source = Cleaners.clean(response.body)
+        source = response.body
         root = soup.fromstring(source)
 
         item['url'] = response.url

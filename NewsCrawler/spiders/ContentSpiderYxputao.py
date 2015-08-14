@@ -28,7 +28,7 @@ class ContentSpiderYxputao(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://youxiputao.com/articles/5443',
+    #     'http://youxiputao.com/articles/5420',
     # ]
 
     def start_requests(self):

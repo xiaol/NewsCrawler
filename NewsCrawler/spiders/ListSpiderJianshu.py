@@ -54,6 +54,8 @@ class ListSpiderJianshu(Spider):
         for it in urls:
             url = it[1]
             title = it[0]
+            if u"\u8fde\u8f7d" in title:
+                continue
             if not url.startswith('http'):
                 url = ''.join(['http://www.jianshu.com', url])
             uris_titles[url] = title

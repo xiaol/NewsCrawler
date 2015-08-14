@@ -28,7 +28,7 @@ class ContentSpiderHjzlg(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://www.hjzlg.com/web5/YCMS_ShowNews.asp?id=62126',
+    #     'http://www.hjzlg.com/web5/YCMS_ShowNews.asp?id=64916',
     # ]
 
     def start_requests(self):

@@ -7,6 +7,7 @@
     Date:    15/6/16
 """
 
+import re
 import sys
 import redis
 from scrapy.spider import Spider
@@ -28,7 +29,7 @@ class ContentSpiderJianshu(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://www.jianshu.com/p/d659cfac6829',
+    #     'http://www.jianshu.com/p/e51dcf98d3da',
     # ]
 
     def start_requests(self):
@@ -42,6 +43,8 @@ class ContentSpiderJianshu(Spider):
         item = ContItem()
 
         source = Cleaners.clean(response.body)
+        re_link = re.compile('<a[\s\S]+?>', re.I)
+        source = re_link.sub('', source)
         root = soup.fromstring(source)
 
         item['url'] = response.url

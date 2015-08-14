@@ -28,7 +28,7 @@ class ContentSpiderYinyuetai(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://news.yinyuetai.com/article/gangtai/16386',
+    #     'http://news.yinyuetai.com/article/oumei/16540',
     # ]
 
     def start_requests(self):

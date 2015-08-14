@@ -28,7 +28,7 @@ class ContentSpiderJandan(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://i.jandan.net/2015/06/20/use-honeybee.html',
+    #     'http://jandan.net/2015/06/17/lowline.html',
     # ]
 
     def start_requests(self):

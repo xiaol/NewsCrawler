@@ -29,7 +29,7 @@ class ContentSpiderSinaImportant(Spider):
     r = redis.Redis(connection_pool=pool)
 
     # start_urls = [
-    #     'http://news.sina.cn/gn/2015-06-17/detail-ifxczpzy2517767.d.html?vt=4&pos=8&cid=56261',
+    #     'http://news.sina.cn/?sa=t124v71d13956061&from=wap&vt=4',
     # ]
 
     def start_requests(self):
