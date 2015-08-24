@@ -164,7 +164,16 @@ class ContentPipeline(object):
         table['author'] = item['author']
         table['update_time'] = item['update_time'] or Dates.time()
         table['imgnum'] = item['imgnum']
-        table['content'] = item['content']
+        # table['content'] = item['content']
+        table['content'] = []
+        for it in item['content']:
+            new_it = defaultdict(dict)
+            try:
+                dc = it.values()[0]
+                new_it[str(len(table['content']))][dc.keys()[0]] = dc[dc.keys()[0]]
+                table['content'].append(item)
+            except IndexError:
+                continue
 
         # info with create
         table['create_time'] = Dates.time()
@@ -172,7 +181,7 @@ class ContentPipeline(object):
         try:
             news_items = Mongo('NewsItems')
             db = news_items.table
-            db.insert(table)
+            db.update({'url': url}, table, upsert=True)
 
             self.r.hmset(url, {
                 'flag': 1,
