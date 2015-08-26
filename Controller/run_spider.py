@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-
+import time
 from scrapyd_api import ScrapydAPI
 
 scrapyd = ScrapydAPI('http://localhost:6888')
@@ -21,6 +21,7 @@ for project in list_projects:
     for spider_name in list_spiders:
         if spider_name not in running_spiders:
              job_id = scrapyd.schedule(project, spider_name)
+             time.sleep(30)
         else:
             print '%s is running.' % spider_name
 
