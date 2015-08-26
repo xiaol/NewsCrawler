@@ -171,7 +171,7 @@ class ContentPipeline(object):
             try:
                 dc = it.values()[0]
                 new_it[str(len(table['content']))][dc.keys()[0]] = dc[dc.keys()[0]]
-                table['content'].append(item)
+                table['content'].append(dict(new_it))
             except IndexError:
                 continue
 
