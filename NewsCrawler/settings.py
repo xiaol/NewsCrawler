@@ -20,12 +20,17 @@ RANDOMIZE_DOWNLOAD_DELAY = True
 
 COOKIES_ENABLES = False
 
+DOWNLOAD_HANDLERS = {'s3': None,
+                     }
+
 DOWNLOADER_MIDDLEWARES = {
-    'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
+    # 'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'NewsCrawler.useragent.RotateUserAgentMiddleware': 400
 }
 
-EXTENSIONS = {'scrapy.contrib.feedexport.FeedExporter': None}
+# EXTENSIONS = {'scrapy.contrib.feedexport.FeedExporter': None}
+EXTENSIONS = {'scrapy.extensions.feedexport.FeedExporter': None}
 
 ITEM_PIPELINES = {
     'NewsCrawler.pipelines.SpeicalPipeline': 200,

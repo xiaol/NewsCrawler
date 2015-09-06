@@ -10,7 +10,7 @@
 import re
 import sys
 import redis
-from scrapy.spider import Spider
+from scrapy.spiders import Spider
 from lxml.html import soupparser as soup
 from Cleaners.Cleaners import Cleaners
 from Extractors.Parse_jianshu import Parser

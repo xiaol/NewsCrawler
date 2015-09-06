@@ -11,7 +11,7 @@ import sys
 import redis
 import random
 from Agents.Agents import Agents
-from scrapy.spider import Spider
+from scrapy.spiders import Spider
 from lxml.html import soupparser as soup
 from Cleaners.Encoding import encode_value
 from Cleaners.Cleaners import Cleaners

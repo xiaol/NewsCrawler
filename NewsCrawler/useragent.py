@@ -8,9 +8,11 @@
 """
 
 import random
-from scrapy import log
+# from scrapy import log
+import logging
 from Agents.Agents import Agents
-from scrapy.contrib.downloadermiddleware.useragent import UserAgentMiddleware
+# from scrapy.contrib.downloadermiddleware.useragent import UserAgentMiddleware
+from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 
 
 class RotateUserAgentMiddleware(UserAgentMiddleware):
@@ -33,5 +35,6 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
         if ua:
             print "********Current UserAgent:%s************" % ua
 
-            log.msg('Current UserAgent: '+ua, level='INFO')
+            # log.msg('Current UserAgent: '+ua, level='INFO')
+            logging.info('Current UserAgent: '+ua)
             request.headers.setdefault('User-Agent', ua)

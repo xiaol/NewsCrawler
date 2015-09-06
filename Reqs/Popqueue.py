@@ -22,7 +22,7 @@ class Popqueue(object):
             if l == 0:
                 print 'Queue-->%s-->Wait' % qname
                 time.sleep(5)
-                return 'http://'
+                return 'http://www.com.cn'
             rpop = r.rpop(qname)
             print 'Queue-->%s-->%s' % (qname, l)
             print 'Queue-->%s-->%s' % (qname, rpop)

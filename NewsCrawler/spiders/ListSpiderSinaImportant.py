@@ -10,7 +10,7 @@
 import sys
 import json
 import redis
-from scrapy.spider import Spider
+from scrapy.spiders import Spider
 from Reqs.Reqs import Reqs
 from collections import defaultdict
 from lxml.html import soupparser as soup
