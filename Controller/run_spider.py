@@ -20,9 +20,9 @@ for project in list_projects:
     running_spiders = [running_jog['spider'] for running_jog in running_jogs]
     for spider_name in list_spiders:
         if spider_name not in running_spiders:
-             job_id = scrapyd.schedule(project, spider_name)
-             print "Starting to run: %s" % job_id
-             time.sleep(30)
+            job_id = scrapyd.schedule(project, spider_name)
+            print "Starting to run: %s" % job_id
+            time.sleep(30)
         else:
             print '%s is running.' % spider_name
 
