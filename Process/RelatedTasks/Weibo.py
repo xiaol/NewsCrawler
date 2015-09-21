@@ -101,7 +101,7 @@ class Weibo(object):
                 'title': weibo.get('content'),
                 'url': weibo.get('url'),
                 'profileImageUrl': weibo.get('profileImageUrl'),
-                'sourceSitename': weibo,
+                'sourceSitename': "weibo",
                 'img': weibo.get('img_url'),
                 'imgs': weibo.get('img_urls'),
                 'like_count': weibo.get('like_count'),
