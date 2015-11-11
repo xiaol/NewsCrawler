@@ -62,7 +62,7 @@ target/
 dump.rdb
 
 # Tests
-/Tests
+/Test/
 /Removed
 
 # Test spiders
@@ -74,3 +74,5 @@ Controller/nohup.out
 dict.txt
 setup.py
 twistd.pid
+
+.DS_Store
