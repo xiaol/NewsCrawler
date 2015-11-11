@@ -19,6 +19,7 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Cleaners.Encoding import encode_value
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -28,8 +29,7 @@ class ListSpiderTtpet(Spider):
 
     name = 'list_spider_ttpet'
     qname = 'ttpet'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 天天宠物网-新闻资讯：http://www.ttpet.com/zixun/39/category-catid-39.html
     # start_urls = [

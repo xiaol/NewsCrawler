@@ -18,6 +18,7 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Cleaners.Encoding import encode_value
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -27,8 +28,7 @@ class ListSpiderYinyuetai(Spider):
 
     name = 'list_spider_yinyuetai'
     qname = 'yinyuetai'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 音悦台：http://news.yinyuetai.com/
     # start_urls = [

@@ -15,6 +15,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Parse_jiecao import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -24,8 +25,7 @@ class ContentSpiderJiecao(Spider):
 
     name = 'content_spider_jiecao'
     qname = 'jiecao:content'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://news.jiecao.fm/client/article/detail.htm?v=2.6.2&id=me2rXWeL&down=true',

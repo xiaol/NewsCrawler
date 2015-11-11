@@ -19,6 +19,7 @@ from Cleaners.Encoding import encode_value
 from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -28,8 +29,7 @@ class ListSpiderWangyiImportant(Spider):
 
     name = 'list_spider_wangyi_important'
     qname = 'wangyi_important'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 网易新闻要闻：http://news.163.com/mobile/
     # 网易新闻社会(API)：http://3g.163.com/touch/article/list/9ARM0ILIbjwangjian/0-10.html

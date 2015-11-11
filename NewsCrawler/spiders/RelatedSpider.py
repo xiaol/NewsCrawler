@@ -27,6 +27,7 @@ from Process.RelatedTasks.Douban import Douban
 from Process.RelatedTasks.Ner import Ner
 from Process.RelatedTasks.Weibo import Weibo
 from Process.RelatedTasks.Zhihu import Zhihu
+from Reqs import redisclient
 
 
 reload(sys)
@@ -43,8 +44,7 @@ class RelatedSpider_(Spider):
 
     name = 'related_spider'
     qname = 'related_spider'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://m.sohu.com/n/411416712/'

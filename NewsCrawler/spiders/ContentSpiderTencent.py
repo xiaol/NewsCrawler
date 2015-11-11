@@ -15,6 +15,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Parse_tencent import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -24,8 +25,7 @@ class ContentSpiderTencent(Spider):
 
     name = 'content_spider_tencent'
     qname = 'tencent:content'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://xw.qq.com/ssh/20150622013369/SSH2015062201336903',

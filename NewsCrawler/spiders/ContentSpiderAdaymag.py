@@ -8,13 +8,13 @@
 """
 
 import sys
-import redis
 from scrapy.spiders import Spider
 from lxml.html import soupparser as soup
 from Cleaners.Cleaners import Cleaners
 from Extractors.Parse_adaymag import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -24,8 +24,7 @@ class ContentSpiderAdaymag(Spider):
 
     name = 'content_spider_adaymag'
     qname = 'adaymag:content'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://www.adaymag.com/2015/06/17/pop-up-super-mario-cafes-in-japan.html',

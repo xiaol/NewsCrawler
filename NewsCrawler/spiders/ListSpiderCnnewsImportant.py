@@ -16,6 +16,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -25,8 +26,7 @@ class ListSpiderCnnewsImportant(Spider):
 
     name = 'list_spider_cnnews_important'
     qname = 'cnnews_important'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 中国新闻网要闻：http://www.chinanews.com/importnews.html
     # start_urls = ['http://www.chinanews.com/importnews.html',

@@ -12,7 +12,6 @@ import sys
 sys.path.insert(0, "..")
 sys.path.append("/work/pro/NewsCrawler/")
 
-
 import time
 import redis
 import gevent
@@ -21,15 +20,13 @@ from Dates.Dates import Dates
 from Models.Mongo import Mongo
 from collections import defaultdict
 from redis.exceptions import ConnectionError
+from Reqs import redisclient
 
 
 class InitSetup(object):
-
     @classmethod
     def redis_setup(cls):
-        pool = redis.ConnectionPool(host='localhost', port=6379)
-        r = redis.Redis(connection_pool=pool)
-        return r
+        return redisclient.from_settings()
 
     @classmethod
     def update_spider_setup_to_redis(cls, items):
@@ -91,15 +88,15 @@ class InitSetup(object):
         max_time = max(max_times)
         res = {}
         for t in max_times:
-            times = max_time/t
-            for i in range(1, times+1):
-                if str(t*i) in res.keys():
+            times = max_time / t
+            for i in range(1, times + 1):
+                if str(t * i) in res.keys():
                     for item in prod[str(t)]:
-                        res[str(t*i)].append(item)
+                        res[str(t * i)].append(item)
                 else:
-                    res[str(t*i)] = []
+                    res[str(t * i)] = []
                     for item in prod[str(t)]:
-                        res[str(t*i)].append(item)
+                        res[str(t * i)].append(item)
 
         threads = []
         for key, value in res.iteritems():
@@ -111,8 +108,8 @@ class InitSetup(object):
     def task_queue(cls, pri, url_q_s):
         minit = 60
         r = cls.redis_setup()
-        gevent.sleep(int(pri)*minit)
-        print '*'*60
+        gevent.sleep(int(pri) * minit)
+        print '*' * 60
         print 'Total: ', len(url_q_s)
         for url_q in url_q_s:
             q_name = url_q[1]
@@ -122,13 +119,10 @@ class InitSetup(object):
 
 
 class Status(object):
-
     @classmethod
     def redis_setup(cls):
         print 'Setup Redis!'
-        pool = redis.ConnectionPool(host='localhost', port=6379)
-        r = redis.Redis(connection_pool=pool)
-        return r
+        return redisclient.from_settings()
 
     @classmethod
     def get_qlen_by_qname(cls):

@@ -15,6 +15,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Parse_ifeng import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -24,8 +25,7 @@ class ContentSpiderFenghuangImportant(Spider):
 
     name = 'content_spider_fenghuang_important'
     qname = 'fenghuang_important:content'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://news.ifeng.com/a/20150616/43983518_0.shtml',

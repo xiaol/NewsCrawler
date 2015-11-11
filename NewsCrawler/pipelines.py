@@ -14,6 +14,8 @@ from Models.Mongo import Mongo
 from scrapy.exceptions import DropItem
 from Dates.Dates import Dates
 
+from Reqs import redisclient
+
 
 class SpeicalPipeline(object):
     """
@@ -21,8 +23,7 @@ class SpeicalPipeline(object):
     Init each url with info get from special spider to redis.
     """
     def __init__(self):
-        self.pool = redis.ConnectionPool(host='localhost', port=6379)
-        self.r = redis.Redis(connection_pool=self.pool)
+        self.r = redisclient.from_settings()
 
     def process_item(self, item, spider):
         if not item.get('special'):                     # Pipeline just for special spider
@@ -50,8 +51,7 @@ class ListPipeline(object):
     """
 
     def __init__(self):
-        self.pool = redis.ConnectionPool(host='localhost', port=6379)
-        self.r = redis.Redis(connection_pool=self.pool)
+        self.r = redisclient.from_settings()
 
     def get_info_by_start_url(self, start_url):
         try:
@@ -123,8 +123,7 @@ class ContentPipeline(object):
     """
 
     def __init__(self):
-        self.pool = redis.ConnectionPool(host='localhost', port=6379)
-        self.r = redis.Redis(connection_pool=self.pool)
+        self.r = redisclient.from_settings()
 
     def process_item(self, item, spider):
         if 'content_spider' not in spider.name:
@@ -205,8 +204,7 @@ class RelatedPipeline(object):
     Save the related items to mongodb by url.
     """
     def __init__(self):
-        self.pool = redis.ConnectionPool(host='localhost', port=6379)
-        self.r = redis.Redis(connection_pool=self.pool)
+        self.r = redisclient.from_settings()
 
     def process_item(self, item, spider):
         if 'related' not in spider.name:

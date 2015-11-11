@@ -15,6 +15,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Parse_nfzm import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -24,8 +25,7 @@ class ContentSpiderNfzmToutiao(Spider):
 
     name = 'content_spider_nfzm_toutiao'
     qname = 'nfzm_toutiao:content'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://www.infzm.com/content/110068',

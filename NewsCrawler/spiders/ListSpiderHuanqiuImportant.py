@@ -17,6 +17,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -26,8 +27,7 @@ class ListSpiderHuanqiuImportant(Spider):
 
     name = 'list_spider_huanqiu_important'
     qname = 'huanqiu_important'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 环球网要闻：http://m.huanqiu.com/lm.html?id=32&v=9
     # 环球网海外看中国：http://m.huanqiu.com/lm.html?id=35&v=9

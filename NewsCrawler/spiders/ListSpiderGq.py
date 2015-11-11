@@ -16,6 +16,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -25,8 +26,7 @@ class ListSpiderGq(Spider):
 
     name = 'list_spider_gq'
     qname = 'gq'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # GQ数码：
     # start_urls = [

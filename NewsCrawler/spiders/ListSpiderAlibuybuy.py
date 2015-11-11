@@ -16,6 +16,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -25,8 +26,7 @@ class ListSpiderAlibuybuy(Spider):
 
     name = 'list_spider_alibuybuy'
     qname = 'alibuybuy'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 互联网那点事：
     # 推荐阅读：http://www.alibuybuy.com/posts/category/collection

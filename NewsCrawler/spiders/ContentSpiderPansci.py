@@ -15,6 +15,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Parse_pansci import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -24,8 +25,7 @@ class ContentSpiderPansci(Spider):
 
     name = 'content_spider_pansci'
     qname = 'pansci:content'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://pansci.tw/archives/81114',

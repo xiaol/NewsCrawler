@@ -16,6 +16,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -25,8 +26,7 @@ class ListSpiderPansci(Spider):
 
     name = 'list_spider_pansci'
     qname = 'pansci'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 泛科学：
     # 人体解析：http://pansci.tw/archives/category/type/humanbeing

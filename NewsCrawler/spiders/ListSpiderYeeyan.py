@@ -17,6 +17,7 @@ from Extractors.Extractor import Extractor
 from Extractors.Parse_yeeyan import Parser
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -26,8 +27,7 @@ class ListSpiderYeeyan(Spider):
 
     name = 'list_spider_yeeyan'
     qname = 'yeeyan'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 译言每日精选-科学：
     # start_urls = [

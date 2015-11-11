@@ -16,6 +16,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Parse_sina import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -25,8 +26,7 @@ class ContentSpiderSinaNews(Spider):
 
     name = 'content_spider_sina_news'
     qname = 'sina_news:content'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://photo.sina.cn/album?vt=4&pos=3&ch=1&sid=2841&aid=85686',

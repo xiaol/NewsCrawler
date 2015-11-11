@@ -16,6 +16,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -25,8 +26,7 @@ class ListSpiderXinhuaFocus(Spider):
 
     name = 'list_spider_xinhua_focus'
     qname = 'xinhua_focus'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 新华网聚焦：http://www.news.cn/xhjj.htm
     # start_urls = ['http://www.news.cn/xhjj.htm',

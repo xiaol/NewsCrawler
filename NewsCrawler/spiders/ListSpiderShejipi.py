@@ -18,6 +18,7 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Cleaners.Encoding import encode_value
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -27,8 +28,7 @@ class ListSpiderShejipi(Spider):
 
     name = 'list_spider_shejipi'
     qname = 'shejipi'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 设计癖：http://www.shejipi.com/
     # start_urls = [

@@ -19,6 +19,7 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Cleaners.Encoding import encode_value
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -28,8 +29,7 @@ class ListSpiderIhuqu(Spider):
 
     name = 'list_spider_ihuqu'
     qname = 'ihuqu'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 爱虎趣-萌宠：http://www.ihuqu.com/animals/
     # start_urls = [

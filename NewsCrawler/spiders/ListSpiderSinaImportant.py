@@ -18,6 +18,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -27,8 +28,7 @@ class ListSpiderSinaImportant(Spider):
 
     name = 'list_spider_sina_important'
     qname = 'sina_important'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 新浪新闻要闻：http://news.sina.com.cn/
     # start_urls = ['http://news.sina.com.cn/',

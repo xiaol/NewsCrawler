@@ -16,6 +16,8 @@ import pymongo
 from collections import defaultdict
 from pymongo.read_preferences import ReadPreference
 
+from Reqs import redisclient
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -99,8 +101,7 @@ def update_spider_setup_to_redis():
     for k, v in items.iteritems():
         print k, v
 
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
     r.hmset('spider_setup', dict(items))
 
     spider = r.hget('spider_setup', 'http://m.sohu.com/c/518/')

@@ -18,6 +18,7 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Cleaners.Encoding import encode_value
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -27,8 +28,7 @@ class ListSpiderKugou(Spider):
 
     name = 'list_spider_kugou'
     qname = 'kugou'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 酷狗-音乐咨询：http://yule.kugou.com/alllist/
     # start_urls = [

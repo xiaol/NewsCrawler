@@ -18,6 +18,7 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs.Reqs import Reqs
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -27,8 +28,7 @@ class ListSpiderWowsai(Spider):
 
     name = 'list_spider_wowsai'
     qname = 'wowsai'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 哇塞网：
     # 最设计：http://www.wowsai.com/zixun/zuichuangyi.html

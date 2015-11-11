@@ -16,6 +16,7 @@ from Cleaners.Encoding import encode_value
 from Extractors.Parse_ihuqu import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -25,8 +26,7 @@ class ContentSpiderIhuqu(Spider):
 
     name = 'content_spider_ihuqu'
     qname = 'ihuqu:content'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://www.ihuqu.com/article/201501/639.html',

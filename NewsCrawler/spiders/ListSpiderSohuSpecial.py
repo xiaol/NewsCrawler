@@ -18,6 +18,7 @@ from Cleaners.Encoding import encode_value
 from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem, SpecialItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -27,8 +28,7 @@ class ListSpiderSohuSpecial(Spider):
 
     name = 'list_spider_sohu_special'
     qname = 'sohu_special'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 搜狐专题：http://news.sohu.com/special.shtml
     # start_urls = ['http://news.sohu.com/special.shtml',

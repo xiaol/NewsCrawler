@@ -19,6 +19,7 @@ from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Cleaners.Encoding import encode_value
 from Extractors.Parse_poocg import Parser
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -28,8 +29,7 @@ class ListSpiderPoocg(Spider):
 
     name = 'list_spider_poocg'
     qname = 'poocg'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 涂鸦王国：http://www.poocg.com/works/new
     # start_urls = [

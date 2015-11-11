@@ -16,6 +16,7 @@ from Cleaners.Encoding import encode_value
 from Extractors.Parse_people import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -25,8 +26,7 @@ class ContentSpidePeopleImportant(Spider):
 
     name = 'content_spider_people_important'
     qname = 'people_important:content'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://media.people.com.cn/n/2015/0707/c120837-27263561.html',

@@ -17,6 +17,7 @@ from Extractors.Extractor import Extractor
 from Extractors.Parse_jinritoutiao import Parser
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -26,8 +27,7 @@ class ListSpiderJinritoutiao(Spider):
 
     name = 'list_spider_jinritoutiao'
     qname = 'jinritoutiao'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 今日头条：
     # 吴静儿囧事播报：http://toutiao.com/m3678008825/

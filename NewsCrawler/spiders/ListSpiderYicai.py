@@ -17,6 +17,7 @@ from Cleaners.Cleaners import Cleaners
 from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
+from Reqs import redisclient
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -26,8 +27,7 @@ class ListSpiderYicai(Spider):
 
     name = 'list_spider_yicai'
     qname = 'yicai'
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    r = redisclient.from_settings()
 
     # 第一财经：http://yicai.media.baidu.com/finance
     # start_urls = [
