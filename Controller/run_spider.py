@@ -22,7 +22,7 @@ for project in list_projects:
         if spider_name not in running_spiders:
             job_id = scrapyd.schedule(project, spider_name)
             print "Starting to run: %s" % job_id
-            time.sleep(30)
+            time.sleep(3)
         else:
             print '%s is running.' % spider_name
 

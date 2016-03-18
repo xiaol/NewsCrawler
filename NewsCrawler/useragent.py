@@ -27,6 +27,7 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
             'content_spider_qzone',
             'list_spider_ihuqu',
             'list_spider_moviesoon',
+            'list_spider_hjzlg',
             ]
         if spider.name in web_spiders:
             ua = random.choice(Agents.web)
