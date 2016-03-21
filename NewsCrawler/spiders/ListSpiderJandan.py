@@ -57,7 +57,7 @@ class ListSpiderJandan(Spider):
         source = response.body
         root = soup.fromstring(source)
 
-        xp = '//*[@class="post"]/div/div[2]/h2/a'
+        xp = '//*[@class="post"]//div/h2/a'
         urls = Extractor.get_list(root, xp)
         uris_titles = defaultdict(str)
         for it in urls:
@@ -69,5 +69,4 @@ class ListSpiderJandan(Spider):
 
         item['start_url'] = response.url
         item['urls'] = uris_titles
-
         yield item
