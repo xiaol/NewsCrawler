@@ -24,6 +24,7 @@ class Parser(object):
         tag = Extractor.get_ment_by_tags(root, tags)
         if tag is not None:
             # tag = tag.text.split('-')[0].strip()
+            tag = tag.text_content()
             return tag
         else:
             return None
@@ -104,10 +105,8 @@ class Parser(object):
             # picli = cls.video_frame(tree)                 # vd is a list[, ]
             picli = []
 
-        attrs = [{'attr': 'class', 'value': 'art_content'},
-                 {'attr': 'id', 'value': 'j_articleContent'}]
+        attrs = [{'attr': 'class', 'value': 'art_main_card j_article_main'}]
         conts = Extractor.get_ment_by_attrs(root, attrs)
-        print 'conts:', conts
         if conts:
             picli += cls.cont_format(conts)
 
