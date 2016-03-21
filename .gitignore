@@ -71,7 +71,10 @@ dump.rdb
 Controller/=0.6.5
 Controller/dbs/
 Controller/nohup.out
+nohup.out
+Controller/init.log*
 dict.txt
+Controller/scrapyd.log*
 setup.py
 twistd.pid
 
