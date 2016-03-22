@@ -17,28 +17,15 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderCpph(Spider):
+class ListSpiderCpph(RedisSpider):
 
     name = 'list_spider_cpph'
     qname = 'cpph'
-    r = redisclient.from_settings()
-
-    # 中国摄影出版社：
-    # start_urls = [
-    #     'http://www.cpph.com/category/news/share',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ListItem()

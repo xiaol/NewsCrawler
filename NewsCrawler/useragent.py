@@ -34,8 +34,4 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
         else:
             ua = random.choice(Agents.mobile)
         if ua:
-            print "********Current UserAgent:%s************" % ua
-
-            # log.msg('Current UserAgent: '+ua, level='INFO')
-            logging.info('Current UserAgent: '+ua)
             request.headers.setdefault('User-Agent', ua)

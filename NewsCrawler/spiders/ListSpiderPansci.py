@@ -17,30 +17,30 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderPansci(Spider):
+class ListSpiderPansci(RedisSpider):
 
     name = 'list_spider_pansci'
     qname = 'pansci'
-    r = redisclient.from_settings()
-
-    # 泛科学：
-    # 人体解析：http://pansci.tw/archives/category/type/humanbeing
-    # 活的科学：http://pansci.tw/archives/category/type/living
-    # start_urls = [
-    #     'http://pansci.tw/archives/category/type/living',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 泛科学：
+    # # 人体解析：http://pansci.tw/archives/category/type/humanbeing
+    # # 活的科学：http://pansci.tw/archives/category/type/living
+    # # start_urls = [
+    # #     'http://pansci.tw/archives/category/type/living',
+    # # ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

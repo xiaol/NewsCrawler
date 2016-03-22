@@ -28,7 +28,7 @@ from Process.RelatedTasks.Ner import Ner
 from Process.RelatedTasks.Weibo import Weibo
 from Process.RelatedTasks.Zhihu import Zhihu
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -40,22 +40,22 @@ gevent.monkey.patch_socket()
 import gevent
 from gevent import Greenlet
 
-class RelatedSpider_(Spider):
+class RelatedSpider_(RedisSpider):
 
     name = 'related_spider'
     qname = 'related_spider'
-    r = redisclient.from_settings()
-
-    # start_urls = [
-    #     'http://m.sohu.com/n/411416712/'
-    # ]
-    
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # start_urls = [
+    # #     'http://m.sohu.com/n/411416712/'
+    # # ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

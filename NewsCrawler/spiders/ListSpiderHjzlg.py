@@ -18,28 +18,15 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderHjzlg(Spider):
+class ListSpiderHjzlg(RedisSpider):
 
     name = 'list_spider_hjzlg'
     qname = 'hjzlg'
-    r = redisclient.from_settings()
-
-    # 韩剧资料馆：http://www.hjzlg.com/web5/YCMS_News.asp
-    # start_urls = [
-    #     'http://www.hjzlg.com/web5/YCMS_News.asp',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ListItem()

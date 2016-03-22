@@ -17,27 +17,27 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderXinhuaFocus(Spider):
+class ListSpiderXinhuaFocus(RedisSpider):
 
     name = 'list_spider_xinhua_focus'
     qname = 'xinhua_focus'
-    r = redisclient.from_settings()
-
-    # 新华网聚焦：http://www.news.cn/xhjj.htm
-    # start_urls = ['http://www.news.cn/xhjj.htm',
-    #               ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 新华网聚焦：http://www.news.cn/xhjj.htm
+    # # start_urls = ['http://www.news.cn/xhjj.htm',
+    # #               ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

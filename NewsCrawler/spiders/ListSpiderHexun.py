@@ -19,29 +19,15 @@ from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Cleaners.Encoding import encode_value
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderHexun(Spider):
+class ListSpiderHexun(RedisSpider):
 
     name = 'list_spider_hexun'
     qname = 'hexun'
-    r = redisclient.from_settings()
-
-    # 和讯财经:
-    # 财经要闻(国内)：http://news.hexun.com/domestic/index.html
-    # start_urls = [
-    #     'http://news.hexun.com/domestic/index.html',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ListItem()

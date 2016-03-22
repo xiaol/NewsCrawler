@@ -17,27 +17,15 @@ from Extractors.Parse_ihuqu import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ContentSpiderIhuqu(Spider):
+class ContentSpiderIhuqu(RedisSpider):
 
     name = 'content_spider_ihuqu'
     qname = 'ihuqu:content'
-    r = redisclient.from_settings()
-
-    # start_urls = [
-    #     'http://www.ihuqu.com/article/201501/639.html',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ContItem()

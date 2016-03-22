@@ -18,29 +18,29 @@ from Extractors.Parse_jinritoutiao import Parser
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderJinritoutiao(Spider):
+class ListSpiderJinritoutiao(RedisSpider):
 
     name = 'list_spider_jinritoutiao'
     qname = 'jinritoutiao'
-    r = redisclient.from_settings()
-
-    # 今日头条：
-    # 吴静儿囧事播报：http://toutiao.com/m3678008825/
-    # start_urls = [
-    #     'http://toutiao.com/m3678008825/',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 今日头条：
+    # # 吴静儿囧事播报：http://toutiao.com/m3678008825/
+    # # start_urls = [
+    # #     'http://toutiao.com/m3678008825/',
+    # # ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

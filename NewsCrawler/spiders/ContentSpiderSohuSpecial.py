@@ -16,27 +16,15 @@ from Extractors.Parse_sohu import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ContentSpiderSohuSpecial(Spider):
+class ContentSpiderSohuSpecial(RedisSpider):
 
     name = 'content_spider_sohu_special'
     qname = 'sohu_special:content'
-    r = redisclient.from_settings()
-
-    # start_urls = [
-    #     'http://m.sohu.com/n/413811116/',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ContItem()

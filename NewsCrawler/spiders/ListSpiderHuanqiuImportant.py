@@ -18,30 +18,15 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderHuanqiuImportant(Spider):
+class ListSpiderHuanqiuImportant(RedisSpider):
 
     name = 'list_spider_huanqiu_important'
     qname = 'huanqiu_important'
-    r = redisclient.from_settings()
-
-    # 环球网要闻：http://m.huanqiu.com/lm.html?id=32&v=9
-    # 环球网海外看中国：http://m.huanqiu.com/lm.html?id=35&v=9
-    # start_urls = [
-    #     'http://m.huanqiu.com/lm.html?id=32&v=9',
-    #     'http://m.huanqiu.com/lm.html?id=35&v=9',
-    #               ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ListItem()

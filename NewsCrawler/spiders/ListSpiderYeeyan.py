@@ -18,28 +18,28 @@ from Extractors.Parse_yeeyan import Parser
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderYeeyan(Spider):
+class ListSpiderYeeyan(RedisSpider):
 
     name = 'list_spider_yeeyan'
     qname = 'yeeyan'
-    r = redisclient.from_settings()
-
-    # 译言每日精选-科学：
-    # start_urls = [
-    #     'http://select.yeeyan.org/lists/science',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 译言每日精选-科学：
+    # # start_urls = [
+    # #     'http://select.yeeyan.org/lists/science',
+    # # ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

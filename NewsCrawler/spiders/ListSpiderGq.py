@@ -17,28 +17,15 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderGq(Spider):
+class ListSpiderGq(RedisSpider):
 
     name = 'list_spider_gq'
     qname = 'gq'
-    r = redisclient.from_settings()
-
-    # GQ数码：
-    # start_urls = [
-    #     'http://m.gq.com.cn/digital/',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ListItem()

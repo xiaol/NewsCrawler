@@ -17,27 +17,15 @@ from Extractors.Parse_jianshu import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ContentSpiderJianshu(Spider):
+class ContentSpiderJianshu(RedisSpider):
 
     name = 'content_spider_jianshu'
     qname = 'jianshu:content'
-    r = redisclient.from_settings()
-
-    # start_urls = [
-    #     'http://www.jianshu.com/p/e51dcf98d3da',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ContItem()

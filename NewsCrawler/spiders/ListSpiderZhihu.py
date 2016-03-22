@@ -18,28 +18,28 @@ from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 import simplejson as json
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderZhihu(Spider):
+class ListSpiderZhihu(RedisSpider):
 
     name = 'list_spider_zhihu'
     qname = 'zhihu'
-    r = redisclient.from_settings()
-
-    # 知乎专栏-影评：
-    # start_urls = [
-    #     'http://zhuanlan.zhihu.com/api/columns/zhimovie/posts?limit=10&offset=0',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 知乎专栏-影评：
+    # # start_urls = [
+    # #     'http://zhuanlan.zhihu.com/api/columns/zhimovie/posts?limit=10&offset=0',
+    # # ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

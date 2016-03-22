@@ -17,27 +17,16 @@ from Extractors.Parse_sina import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
 from Reqs import redisclient
+from ..spiders import RedisSpider
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ContentSpiderSinaImportant(Spider):
+class ContentSpiderSinaImportant(RedisSpider):
 
     name = 'content_spider_sina_important'
     qname = 'sina_important:content'
-    r = redisclient.from_settings()
-
-    # start_urls = [
-    #     'http://news.sina.cn/?sa=t124v71d13956061&from=wap&vt=4',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ContItem()

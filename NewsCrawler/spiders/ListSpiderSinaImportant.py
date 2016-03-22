@@ -19,27 +19,27 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderSinaImportant(Spider):
+class ListSpiderSinaImportant(RedisSpider):
 
     name = 'list_spider_sina_important'
     qname = 'sina_important'
-    r = redisclient.from_settings()
-
-    # 新浪新闻要闻：http://news.sina.com.cn/
-    # start_urls = ['http://news.sina.com.cn/',
-    #               ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 新浪新闻要闻：http://news.sina.com.cn/
+    # # start_urls = ['http://news.sina.com.cn/',
+    # #               ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     @staticmethod
     def api_urls(url):

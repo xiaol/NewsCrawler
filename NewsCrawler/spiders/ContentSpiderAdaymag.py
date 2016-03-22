@@ -15,27 +15,29 @@ from Extractors.Parse_adaymag import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
 from Reqs import redisclient
+from ..spiders import RedisSpider
+
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ContentSpiderAdaymag(Spider):
+class ContentSpiderAdaymag(RedisSpider):
 
     name = 'content_spider_adaymag'
     qname = 'adaymag:content'
-    r = redisclient.from_settings()
+    # r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://www.adaymag.com/2015/06/17/pop-up-super-mario-cafes-in-japan.html',
     # ]
 
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ContItem()

@@ -107,7 +107,7 @@ class Parser(object):
 
         attrs = [{'attr': 'class', 'value': 'art_main_card j_article_main'}]
         conts = Extractor.get_ment_by_attrs(root, attrs)
-        if conts:
+        if conts is not None:
             picli += cls.cont_format(conts)
 
         # If has next pages, add to picli with simple check
@@ -190,12 +190,10 @@ class Parser(object):
     def cont_format(node):
         contents = []
         dedupe = set()
-
+        if node is None:
+            return contents
         for child in node.iter():
             item = defaultdict(dict)
-
-            print 'Tag', child.tag, 'ATTR', child.attrib
-
             # tags filter
             if 'class' in child.attrib and child.attrib['class'] == 'weiboCard':
                 continue
@@ -259,7 +257,7 @@ class Parser(object):
                 contents.append(tb)
                 continue
 
-        return contents or []
+        return contents[:-5] if len(contents) > 5 else contents
 
     @staticmethod
     def next_page(url):

@@ -19,30 +19,30 @@ from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs.Reqs import Reqs
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderWowsai(Spider):
+class ListSpiderWowsai(RedisSpider):
 
     name = 'list_spider_wowsai'
     qname = 'wowsai'
-    r = redisclient.from_settings()
-
-    # 哇塞网：
-    # 最设计：http://www.wowsai.com/zixun/zuichuangyi.html
-    # 艺术界：http://www.wowsai.com/zixun/yishujie.html
-    # start_urls = [
-    #     'http://www.wowsai.com/zixun/zuichuangyi.html',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 哇塞网：
+    # # 最设计：http://www.wowsai.com/zixun/zuichuangyi.html
+    # # 艺术界：http://www.wowsai.com/zixun/yishujie.html
+    # # start_urls = [
+    # #     'http://www.wowsai.com/zixun/zuichuangyi.html',
+    # # ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

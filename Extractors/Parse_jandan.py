@@ -122,6 +122,8 @@ class Parser(object):
             if child.tag == 'img':
                 img = child.get('data-original') or child.get('src')
                 if img and img not in dedupe:
+                    if img.startswith("//"):
+                        img = "http:" + img
                     item[str(len(contents))]['img'] = img
                     contents.append(item)
                     dedupe.add(img)

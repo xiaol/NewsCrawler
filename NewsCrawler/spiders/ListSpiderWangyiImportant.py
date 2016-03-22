@@ -20,30 +20,30 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderWangyiImportant(Spider):
+class ListSpiderWangyiImportant(RedisSpider):
 
     name = 'list_spider_wangyi_important'
     qname = 'wangyi_important'
-    r = redisclient.from_settings()
-
-    # 网易新闻要闻：http://news.163.com/mobile/
-    # 网易新闻社会(API)：http://3g.163.com/touch/article/list/9ARM0ILIbjwangjian/0-10.html
-    # start_urls = [
-    #     'http://news.163.com/mobile/',
-    #     'http://3g.163.com/touch/article/list/9ARM0ILIbjwangjian/0-16.html'
-    #     ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 网易新闻要闻：http://news.163.com/mobile/
+    # # 网易新闻社会(API)：http://3g.163.com/touch/article/list/9ARM0ILIbjwangjian/0-10.html
+    # # start_urls = [
+    # #     'http://news.163.com/mobile/',
+    # #     'http://3g.163.com/touch/article/list/9ARM0ILIbjwangjian/0-16.html'
+    # #     ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

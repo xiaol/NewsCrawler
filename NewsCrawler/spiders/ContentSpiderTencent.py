@@ -16,27 +16,15 @@ from Extractors.Parse_tencent import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ContentSpiderTencent(Spider):
+class ContentSpiderTencent(RedisSpider):
 
     name = 'content_spider_tencent'
     qname = 'tencent:content'
-    r = redisclient.from_settings()
-
-    # start_urls = [
-    #     'http://xw.qq.com/ssh/20150622013369/SSH2015062201336903',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ContItem()

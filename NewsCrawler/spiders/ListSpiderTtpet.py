@@ -20,28 +20,28 @@ from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Cleaners.Encoding import encode_value
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderTtpet(Spider):
+class ListSpiderTtpet(RedisSpider):
 
     name = 'list_spider_ttpet'
     qname = 'ttpet'
-    r = redisclient.from_settings()
-
-    # 天天宠物网-新闻资讯：http://www.ttpet.com/zixun/39/category-catid-39.html
-    # start_urls = [
-    #     'http://www.ttpet.com/zixun/39/category-catid-39.html',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 天天宠物网-新闻资讯：http://www.ttpet.com/zixun/39/category-catid-39.html
+    # # start_urls = [
+    # #     'http://www.ttpet.com/zixun/39/category-catid-39.html',
+    # # ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

@@ -17,28 +17,28 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderTechcrunch(Spider):
+class ListSpiderTechcrunch(RedisSpider):
 
     name = 'list_spider_techcrunch'
     qname = 'techcrunch'
-    r = redisclient.from_settings()
-
-    # TechCrunch中国：http://techcrunch.cn/
-    # start_urls = [
-    #     'http://techcrunch.cn/',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # TechCrunch中国：http://techcrunch.cn/
+    # # start_urls = [
+    # #     'http://techcrunch.cn/',
+    # # ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

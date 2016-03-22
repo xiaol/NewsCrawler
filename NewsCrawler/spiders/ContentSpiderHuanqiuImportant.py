@@ -18,28 +18,15 @@ from Extractors.Parse_hqiu import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ContentSpiderHuanqiuImportant(Spider):
+class ContentSpiderHuanqiuImportant(RedisSpider):
 
     name = 'content_spider_huanqiu_important'
     qname = 'huanqiu_important:content'
-    r = redisclient.from_settings()
-
-    # start_urls = [
-    #     # 'http://m.huanqiu.com/view.html?id=1566988&v=9',    # image page
-    #     'http://m.huanqiu.com/view.html?id=2081757&v=9',    # common page
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     @staticmethod
     def get_contents_by_api(url):

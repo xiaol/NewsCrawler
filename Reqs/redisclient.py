@@ -20,6 +20,7 @@ def from_settings():
         # pool = redis.ConnectionPool(host=host, port=port)
         # r = redis.Redis(connection_pool=pool)
         r = redis.Redis(host, port, password=password)
+        # r = redis.Redis(host=host, port=port)
         info = r.info()
         logging.info("Redis connection created with mode: %s,"
                      " connected_clients: %s" % (info.get("redis_mode"), info.get("connected_clients")))

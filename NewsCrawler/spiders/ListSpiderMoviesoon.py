@@ -17,28 +17,28 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderMoviesoon(Spider):
+class ListSpiderMoviesoon(RedisSpider):
 
     name = 'list_spider_moviesoon'
     qname = 'moviesoon'
-    r = redisclient.from_settings()
-
-    # 好莱坞电影手册-影像日报：
-    # start_urls = [
-    #     'http://moviesoon.com/news/',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 好莱坞电影手册-影像日报：
+    # # start_urls = [
+    # #     'http://moviesoon.com/news/',
+    # # ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

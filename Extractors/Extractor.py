@@ -22,8 +22,6 @@ class Extractor(object):
             sel = '//*[@name="%s"]' % name
             ment = root.xpath(sel)
             if len(ment):
-                print 'sel-->', '//*[@name="%s"]' % name
-                print 'content-->', ment[0].get('content')
                 return ment[0]
         return None
 
@@ -34,8 +32,6 @@ class Extractor(object):
                 sel = '//*[@%s="%s"]' % (attr['attr'], attr['value'])
                 ment = root.xpath(sel)
                 if len(ment):
-                    print 'sel-->', '//*[@%s="%s"]' % (attr['attr'], attr['value'])
-                    print 'result-->', ment[0].text_content()
                     return ment[0]
         return None
 
@@ -45,8 +41,6 @@ class Extractor(object):
             sel = '//%s' % tag
             ment = root.xpath(sel)
             if len(ment):
-                print 'sel-->', '//*[@tag="%s"]' % tag
-                print 'result-->', ment[0].text_content()
                 return ment[0]
         return None
 
@@ -55,7 +49,5 @@ class Extractor(object):
         for xp in xps:
             ment = root.xpath(xp)
             if len(ment):
-                print 'sel-->', xp
-                print 'result-->', ment[0].text_content()
                 return ment[0].text_content()
         return None

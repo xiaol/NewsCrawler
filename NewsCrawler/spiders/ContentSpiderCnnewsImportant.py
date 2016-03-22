@@ -16,27 +16,28 @@ from Extractors.Parse_cnnews import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
 from Reqs import redisclient
+from ..spiders import RedisSpider
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ContentSpiderCnnewsImportant(Spider):
+class ContentSpiderCnnewsImportant(RedisSpider):
 
     name = 'content_spider_cnnews_important'
     qname = 'cnnews_important:content'
-    r = redisclient.from_settings()
+    # r = redisclient.from_settings()
 
     # start_urls = [
     #     'http://www.chinanews.com/m/mil/2015/07-07/7389630.shtml',
     # ]
 
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ContItem()

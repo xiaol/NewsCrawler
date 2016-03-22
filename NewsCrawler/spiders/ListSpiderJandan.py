@@ -17,16 +17,16 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderJandan(Spider):
+class ListSpiderJandan(RedisSpider):
 
     name = 'list_spider_jandan'
     qname = 'jandan'
-    r = redisclient.from_settings()
+    # r = redisclient.from_settings()
 
     # 煎蛋网：
     # 重口味：http://i.jandan.net/tag/%E9%87%8D%E5%8F%A3%E5%91%B3
@@ -44,12 +44,12 @@ class ListSpiderJandan(Spider):
     #     'http://i.jandan.net/tag/%E8%B5%B0%E8%BF%9B%E7%A7%91%E5%AD%A6',
     # ]
 
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

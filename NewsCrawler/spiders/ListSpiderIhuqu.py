@@ -20,28 +20,15 @@ from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Cleaners.Encoding import encode_value
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderIhuqu(Spider):
+class ListSpiderIhuqu(RedisSpider):
 
     name = 'list_spider_ihuqu'
     qname = 'ihuqu'
-    r = redisclient.from_settings()
-
-    # 爱虎趣-萌宠：http://www.ihuqu.com/animals/
-    # start_urls = [
-    #     'http://www.ihuqu.com/animals/',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ListItem()

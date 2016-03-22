@@ -17,29 +17,15 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderAlibuybuy(Spider):
+class ListSpiderAlibuybuy(RedisSpider):
 
     name = 'list_spider_alibuybuy'
     qname = 'alibuybuy'
-    r = redisclient.from_settings()
-
-    # 互联网那点事：
-    # 推荐阅读：http://www.alibuybuy.com/posts/category/collection
-    # start_urls = [
-    #     'http://www.alibuybuy.com/posts/category/collection',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ListItem()

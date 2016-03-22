@@ -19,27 +19,27 @@ from Extractors.Extractor import Extractor
 from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem, SpecialItem
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderSohuSpecial(Spider):
+class ListSpiderSohuSpecial(RedisSpider):
 
     name = 'list_spider_sohu_special'
     qname = 'sohu_special'
-    r = redisclient.from_settings()
-
-    # 搜狐专题：http://news.sohu.com/special.shtml
-    # start_urls = ['http://news.sohu.com/special.shtml',
-    #               ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 搜狐专题：http://news.sohu.com/special.shtml
+    # # start_urls = ['http://news.sohu.com/special.shtml',
+    # #               ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = SpecialItem()                        # special item

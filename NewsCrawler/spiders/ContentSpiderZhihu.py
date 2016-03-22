@@ -18,27 +18,15 @@ from Extractors.Parse_yxputao import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ContentSpiderZhihu(Spider):
+class ContentSpiderZhihu(RedisSpider):
 
     name = 'content_spider_zhihu'
     qname = 'zhihu:content'
-    r = redisclient.from_settings()
-
-    # start_urls = [
-    #     'http://zhuanlan.zhihu.com/api/columns/zhimovie/posts/20085804',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ContItem()

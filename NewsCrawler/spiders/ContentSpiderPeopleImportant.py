@@ -17,27 +17,15 @@ from Extractors.Parse_people import Parser
 from NewsCrawler.items import ContItem
 from Reqs.Popqueue import Popqueue
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ContentSpidePeopleImportant(Spider):
+class ContentSpidePeopleImportant(RedisSpider):
 
     name = 'content_spider_people_important'
     qname = 'people_important:content'
-    r = redisclient.from_settings()
-
-    # start_urls = [
-    #     'http://media.people.com.cn/n/2015/0707/c120837-27263561.html',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ContItem()

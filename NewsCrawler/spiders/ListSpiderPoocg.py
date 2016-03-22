@@ -20,28 +20,28 @@ from NewsCrawler.items import ListItem
 from Cleaners.Encoding import encode_value
 from Extractors.Parse_poocg import Parser
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderPoocg(Spider):
+class ListSpiderPoocg(RedisSpider):
 
     name = 'list_spider_poocg'
     qname = 'poocg'
-    r = redisclient.from_settings()
-
-    # 涂鸦王国：http://www.poocg.com/works/new
-    # start_urls = [
-    #     'http://www.poocg.com/works/new',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
+    # r = redisclient.from_settings()
+    #
+    # # 涂鸦王国：http://www.poocg.com/works/new
+    # # start_urls = [
+    # #     'http://www.poocg.com/works/new',
+    # # ]
+    #
+    # def start_requests(self):
+    #     # formate start_urls from redis pop
+    #     while 1:
+    #         yield self.make_requests_from_url(
+    #             Popqueue.rpop(self.r, self.qname)
+    #         )
 
     def parse(self, response):
         item = ListItem()

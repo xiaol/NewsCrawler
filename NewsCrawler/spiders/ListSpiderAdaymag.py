@@ -18,29 +18,15 @@ from Reqs.Popqueue import Popqueue
 from NewsCrawler.items import ListItem
 from Cleaners.Encoding import encode_value
 from Reqs import redisclient
-
+from ..spiders import RedisSpider
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class ListSpiderAdaymag(Spider):
+class ListSpiderAdaymag(RedisSpider):
 
     name = 'list_spider_adaymag'
     qname = 'adaymag'
-    r = redisclient.from_settings()
-
-    # A day magazine:
-    # lifestyle：http://www.adaymag.com/lifestyle/
-    # start_urls = [
-    #     'http://www.adaymag.com/lifestyle/',
-    # ]
-
-    def start_requests(self):
-        # formate start_urls from redis pop
-        while 1:
-            yield self.make_requests_from_url(
-                Popqueue.rpop(self.r, self.qname)
-            )
 
     def parse(self, response):
         item = ListItem()
