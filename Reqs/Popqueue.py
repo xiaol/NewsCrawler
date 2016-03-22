@@ -8,22 +8,21 @@
 """
 
 import time
+import random
 
 
 class Popqueue(object):
 
     @classmethod
     def rpop(cls, r, qname):
-        time.sleep(3)
         # pop url from setup url list from redis
         while 1:
             # set_up:url
             l = r.llen(qname)
             if l == 0:
                 print 'Queue-->%s-->Wait' % qname
-                time.sleep(5)
-                return 'http://www.com.cn'
-            rpop = r.rpop(qname)
-            print 'Queue-->%s-->%s' % (qname, l)
-            print 'Queue-->%s-->%s' % (qname, rpop)
-            return rpop
+                time.sleep(random.randint(3, 15))
+            else:
+                rpop = r.rpop(qname)
+                print 'Queue-->%s-->%s-->%s' % (qname, l, rpop)
+                return rpop
