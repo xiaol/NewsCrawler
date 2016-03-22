@@ -210,6 +210,8 @@ class Parser(object):
 
             if child.tag == 'img':
                 img = child.get('src')
+                if img.endswith("320X320.png") or img.endswith("up.png") or img.endswith("down.png"):
+                    break
                 if img and img not in dedupe:
                     item[str(len(contents))]['img'] = img
                     contents.append(item)
@@ -257,7 +259,7 @@ class Parser(object):
                 contents.append(tb)
                 continue
 
-        return contents[:-5] if len(contents) > 5 else contents
+        return contents
 
     @staticmethod
     def next_page(url):
